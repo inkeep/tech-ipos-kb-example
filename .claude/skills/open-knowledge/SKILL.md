@@ -3,7 +3,7 @@ name: open-knowledge
 description: "MUST invoke before reading or editing any `.md` / `.mdx` file, and before any `mcp__open-knowledge__*` tool call (`exec`, `search`, `write_document`, `edit_document`, and the rest). This skill is installed into the repository by `ok init`, so its presence alone means this is an Open Knowledge project — its runtime contract governs every markdown file here, with no need to probe for a `.ok/` directory. Authoritative agent-runtime contract; supersedes the overlapping MCP server `instructions` echo."
 compatibility: "Claude Code, Claude Desktop, Claude Cowork, Claude.ai web. Requires Open Knowledge MCP server + code execution."
 metadata:
-  version: "0.9.0-beta.40"
+  version: "0.9.0-beta.39"
   author: "Inkeep"
   repository: "https://github.com/inkeep/open-knowledge"
 ---
@@ -70,7 +70,7 @@ The user watches your edits land in a live browser preview. Open it once at sess
 
 **Pick how to open the preview by tool capability — not by host name.** Look at the tools actually available to you this session. If a tool can navigate to a URL, it counts as an in-app browser — match on the capability, not on what your host is called.
 
-- **You have `preview_*` tools** (e.g. `preview_start` + `preview_eval`) → **First open of the session:** to land directly on a doc, arm it first with `get_preview_url({ armPaneTarget: true, docName })` (or `folder`), then `preview_start("open-knowledge-ui")` — `ok ui` redirects the base-open straight to the armed route, so the pane opens on the doc, not root. Plain `preview_start` (no arm) opens at root. **Moving between docs once the pane is open: do it in one `preview_eval` step — set `window.location.hash` to the target's route fragment from the response `previewUrl`, the part from `#` on (e.g. `window.location.hash = '#/specs/foo/SPEC'`).** That drives the SPA router directly. Arm + `preview_start` only redirects a *fresh* open; it can't move an already-open pane (`preview_start` reuses the live process without reloading), so use `preview_eval` there. Don't read or edit `.claude/launch.json` — host-managed; the OK lock-collision proxy handles the UI-already-running case. If `preview_start` fails, report it; don't "fix" `launch.json`.
+- **You have a `preview_*` tool** (e.g. `preview_start`) → call `preview_start("open-knowledge-ui")`; the pane supplies its own origin. To land the pane on a specific target, arm it first: `get_preview_url({ armPaneTarget: true, docName })` (or `folder`) writes a ~30s target so the next base-open lands there. Don't read or edit `.claude/launch.json` — host-managed; the OK lock-collision proxy handles the UI-already-running case. If `preview_start` fails, report it; don't "fix" `launch.json`.
 - **No `preview_*` tool, but you have an in-app / built-in browser tool** — Codex's built-in browser, or any host tool that navigates to a URL (`browser`, `view_url`, `open_url`, `web.browse`, etc.) → call `get_preview_url` once for the **exact** target (`docName` for a doc, `folder` for a folder) and navigate your **in-app browser** straight to the returned `url`. Open that deep URL directly — never the root then navigate. Omit both args only for the root.
 - **Truly no browser-capable tool — if you have ANY tool that navigates to a URL, use the in-app branch above** (a pure stdio host with no URL-navigation tool at all, e.g. the Claude Code CLI) → for an "open `<doc>`/`<folder>`" request, run **`ok open <doc>`** (`--folder` for a folder) — opens the doc in OK Desktop via deep link (folders in the browser), with browser fallback; an action, not a URL to print. No `ok` on PATH or no shell → `get_preview_url`, then `open <url>` in the system browser as a last resort, and say so plainly. The system browser is the fallback, never the default.
 - **Honor `autoOpen`** (on `get_preview_url`, or on `warning` for write tools). If `false`, do not open or refresh any preview UI; surface the URL only if asked.
@@ -94,7 +94,7 @@ OK Electron and `ok ui` share `ui.lock`; when a second UI binds a different port
 
 **The preview is read-only for the agent — it is the user's view, not a surface you read back.** You cannot click or type to drive edits — the CRDT flow is one-way (agent → MCP → CRDT → preview).
 
-**No screenshots to confirm edits, no generic verification loop.** Do NOT take `preview_screenshot` (host tool, not OK MCP) after a write, and do not run a generic snapshot/eval/screenshot verification loop — OK's preview is a read-only, one-way mirror, so the CRDT tool response *is* the confirmation that an edit landed. Screenshot only when debugging a visual rendering issue or when the user explicitly asks to see the preview — never to confirm an edit landed. (Navigating the pane with `preview_eval` by setting `window.location.hash` is fine — that drives the view, it is not a read-back verification loop.)
+**No screenshots to confirm edits, no generic verification loop.** Do NOT take `preview_screenshot` (host tool, not OK MCP) after a write, and do not run a generic snapshot/eval/screenshot verification loop — OK's preview is a read-only, one-way mirror, so the CRDT tool response *is* the confirmation that an edit landed. Screenshot only when debugging a visual rendering issue or when the user explicitly asks to see the preview — never to confirm an edit landed.
 
 ## Writing
 
