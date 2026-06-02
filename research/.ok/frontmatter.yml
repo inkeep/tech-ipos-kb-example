@@ -1,0 +1,6 @@
+title: Research
+description: "Provisional analysis synthesizing external sources. Produced by the `research` tool. Every factual claim cites a specific doc in `external-sources/` (or an inline URL if ingest was skipped); no unsourced assertions. Each article has `status: provisional` and a `sources:` frontmatter list of cited paths — keep the `sources:` list aligned with the docs linked in the article's body. Promoted to `articles/` via `consolidate` once the team decides the findings are stable."
+tags:
+  - research
+  - provisional
+  - layer-research

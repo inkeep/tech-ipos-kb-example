@@ -1,0 +1,105 @@
+# yaml-language-server: $schema=https://unpkg.com/@inkeep/open-knowledge@latest/dist/schemas/v0/config.project.schema.json
+# Open Knowledge — project configuration
+#
+# This file overrides built-in defaults for this project. Every key below
+# is commented out and shows its current default value. Uncomment any key
+# to override it.
+#
+# Precedence (lowest -> highest):
+#   Built-in defaults
+#     -> ~/.ok/global.yml         (user defaults)
+#     -> ./.ok/config.yml         (this file)
+#
+# Schema reference: packages/cli/src/config/schema.ts
+
+
+# --- Content ---------------------------------------------------------------
+# dir: where the CRDT editor reads/writes documents. Relative to the project
+# root (the directory containing .ok/), NOT to this file.
+#
+# Path exclusions live in .okignore (gitignore syntax) at the project root,
+# with nested .okignore files honored at any folder depth.
+#
+# content:
+#   dir: .
+
+
+# --- Suggested lifecycle (optional pattern) --------------------------------
+# Projects that want an explicit knowledge-maturation flow can organize as
+# three tiers *relative to the content directory* — create the subfolders
+# only when you need them:
+#
+#   1. external-sources/  — raw content fetched from URLs, PDFs. No analysis,
+#                           just preservation. Use the `ingest` MCP tool.
+#   2. research/          — analysis and synthesis. Provisional findings,
+#                           trade-offs, open questions. Use the `research`
+#                           MCP tool.
+#   3. articles/          — canonical knowledge. Use the `consolidate` MCP
+#                           tool to promote research -> articles once
+#                           decisions are made.
+#
+# This is a pattern, not a requirement. Projects with existing layouts
+# (`specs/`, `reports/`, `docs/`, etc.) should use those; the lifecycle
+# exists as mental scaffolding, not as enforced filesystem structure.
+
+
+# --- Server ----------------------------------------------------------------
+# Host: set via `--host` flag or `HOST` env var (default: localhost; use
+# `0.0.0.0` to bind LAN-visible). Port: set via `--port` flag or `PORT`
+# env var (auto-allocated if unset). Both are per-process runtime knobs —
+# no `server:` schema field exists.
+
+
+# --- Appearance ------------------------------------------------------------
+# Theme for the chrome. Defaults UNSET so the existing localStorage cache
+# (`ok-theme-v1`) keeps powering FOUC-free first paint until you
+# explicitly write here.
+#
+# appearance:
+#   theme: system            # 'light' | 'dark' | 'system'
+
+
+# --- Folders: per-folder frontmatter defaults -------------------------------
+#
+# TL;DR glob gotcha: `**` is ONLY a multi-segment wildcard when it is a
+# standalone path segment. `foo-**` behaves like `foo-*` (single segment, NOT
+# descendants). Use `foo/**` or `foo-*/**` to match descendants.
+#
+# Declare title/description/tags defaults keyed by glob `match:`. Rules merge
+# with a file's own frontmatter at read time:
+#   - Per scalar (title, description): the FILE wins when declared; folder
+#     rule fills in blanks.
+#   - Tags: concatenated across ALL matching rules (in declaration order) with
+#     file tags last; first-occurrence preserved on dedup.
+#   - Evaluation is positional — LATER rules in this array override earlier
+#     rules for scalars. Put general rules first, specific rules last.
+#
+# Picomatch glob cheatsheet:
+#   `match: 'foo'`         — matches ONLY the folder `foo` itself
+#   `match: 'foo/**'`      — matches `foo` AND all descendants (files + dirs)
+#   `match: 'foo-*'`       — matches `foo-1`, `foo-bar` (single segment)
+#   `match: 'foo-**'`      — behaves like `foo-*` (NOT multi-segment); see
+#                              TL;DR above. Use `foo-*/**` if you want
+#                              `foo-X` plus its descendants.
+#
+# Tip: run `ok seed` to scaffold the Karpathy three-layer starter
+# (external-sources/, research/, articles/) with matching `folders:` entries.
+# The commented example below is the exact structure `ok seed` writes.
+#
+# Example:
+# folders:
+#   - match: 'external-sources/**'
+#     frontmatter:
+#       title: External Sources
+#       description: Raw preserved sources (URLs, PDFs, files). Immutable — captured verbatim via `ingest`. No analysis in these files; takeaways belong in `research/`.
+#       tags: [source, immutable, layer-ingest]
+#   - match: 'research/**'
+#     frontmatter:
+#       title: Research
+#       description: Provisional analysis synthesizing external sources. Produced by the `research` tool. Promote to `articles/` via `consolidate` when the team decides.
+#       tags: [research, provisional, layer-research]
+#   - match: 'articles/**'
+#     frontmatter:
+#       title: Articles
+#       description: Canonical knowledge committed after a team decision. Produced by the `consolidate` tool with a `supersedes:` chain tying back to the research that preceded it.
+#       tags: [article, canonical, layer-consolidate]
