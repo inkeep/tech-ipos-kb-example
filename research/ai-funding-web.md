@@ -87,49 +87,6 @@ This is the Bloomberg chart that inspired this doc. The sections below recreate 
 
 Edge colors: <span style="color:#16a34a">**green = investment into a lab**</span> · <span style="color:#2563eb">**blue = compute / cloud purchase by a lab**</span> · <span style="color:#d97706">**amber (dashed) = equity stake / warrant / backstop**</span>.
 
-```mermaid
-graph LR
-  OpenAI["OpenAI<br/>$852B"]
-  Anthropic["Anthropic<br/>$965B"]
-  SpaceX["SpaceX + xAI<br/>~$1.75T IPO"]
-  Nvidia["Nvidia<br/>$5.2T"]
-  Microsoft["Microsoft<br/>$3.2T"]
-  Amazon["Amazon<br/>$2.8T"]
-  Google["Alphabet<br/>$4.2T"]
-  Oracle["Oracle<br/>$410B"]
-  AMD["AMD<br/>~$0.4T"]
-  Broadcom["Broadcom<br/>$1.9T"]
-  CoreWeave["CoreWeave<br/>~$65B"]
-  SoftBank["SoftBank"]
-
-  Nvidia -->|"invest ≤$100B"| OpenAI
-  Amazon -->|"invest ≤$50B"| OpenAI
-  SoftBank -->|"$30B"| OpenAI
-  Microsoft -->|"~27% / $13.8B"| OpenAI
-  Amazon -->|"~$13B total"| Anthropic
-  Google -->|"~$3B / 14%"| Anthropic
-
-  OpenAI -->|"$300B cloud"| Oracle
-  OpenAI -->|"$250B Azure"| Microsoft
-  OpenAI -->|"$350B chips"| Broadcom
-  OpenAI -->|"$100B GPUs"| Nvidia
-  OpenAI -->|"$90B GPUs"| AMD
-  OpenAI -->|"$22B cloud"| CoreWeave
-  Anthropic -->|"$100B+ cloud"| Amazon
-  Anthropic -->|"TPUs (tens $B)"| Google
-  Anthropic -->|"GPU capacity"| SpaceX
-
-  OpenAI -.->|"warrant ~10% AMD"| AMD
-  Nvidia -.->|"~6% + $6.3B backstop"| CoreWeave
-
-  classDef ipo stroke-width:4px;
-  class OpenAI,Anthropic,SpaceX ipo;
-
-  linkStyle 0,1,2,3,4,5 stroke:#16a34a,stroke-width:2px;
-  linkStyle 6,7,8,9,10,11,12,13,14 stroke:#2563eb,stroke-width:2px;
-  linkStyle 15,16 stroke:#d97706,stroke-width:2px;
-```
-
 ## Node dataset
 
 | Entity | Category | Market value / valuation | Public? | Basis |
