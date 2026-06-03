@@ -85,7 +85,8 @@ This is the Bloomberg chart that inspired this doc. The sections below recreate 
 
 ## The relationship web (typed flows)
 
-Edge colors: <span style="color:#16a34a">**green = investment into a lab**</span> · <span style="color:#2563eb">**blue = compute / cloud purchase by a lab**</span> · <span style="color:#d97706">**amber (dashed) = equity stake / warrant / backstop**</span>.
+Edge colors: 
+<span style="color:#16a34a">**green = investment into a lab**</span> · <span style="color:#2563eb">**blue = compute / cloud purchase by a lab**</span> · <span style="color:#d97706">**amber (dashed) = equity stake / warrant / backstop**</span>.
 
 ## Node dataset
 
