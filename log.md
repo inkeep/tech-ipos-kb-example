@@ -121,6 +121,12 @@ What to log:
 - Replaced it with a themed `html preview` legend wired to theme tokens (green=`--chart-2`, blue=`--chart-1`, amber-dashed=`--chart-3`), matching the doc's existing bubble-chart palette. No content/data changed — same three edge-type semantics.
 - Open follow-ups: the relationship web is still legend-only; a typed-edge diagram (mermaid or `html preview`) could make the green/blue/amber flows visible rather than just described.
 
+## 2026-06-05: Added mermaid recreation of the typed funding web
+
+- Recreated the funding web as a `mermaid` directed graph in [AI capital-web funding chart](./research/ai-funding-web.md), under the relationship-web legend: 12 entity nodes (labels carry market value / valuation) and 18 typed edges built from the doc's edge dataset — green = investment, blue = compute purchase, amber-dotted = equity / warrant / backstop. The three impending-IPO labs are border-highlighted. Verified it renders in the preview (12 nodes / 18 edges, no error).
+- Gotcha worth remembering: this renderer's mermaid `linkStyle` / `classDef` grammar rejects `var(--token)` (parse error on the `(`). Unlike `html preview` embeds, mermaid edge colors must be literal (hex). Used literal green/blue/amber for edges; kept node styling theme-aware by highlighting labs with a token-free `stroke-width` bump only.
+- Open follow-ups: edge colors are fixed hex (can't track theme) — acceptable since they're semantic, but a fully theme-tracking version would need an `html preview` SVG instead of mermaid.
+
 ## 2026-06-05: Added public-demo-repo framing + Open Knowledge links to README
 
 - Reframed [README](./README.md) so the **"this is a public demo repository"** fact is front-and-center for outside readers landing via GitHub: added an `IMPORTANT` banner explaining the repo is a public example built with Open Knowledge and safe to share, and trimmed the existing `CAUTION` block to focus on the financial-disclaimer angle (no longer double-stating "demonstration project").
