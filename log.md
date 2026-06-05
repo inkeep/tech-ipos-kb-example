@@ -108,3 +108,9 @@ What to log:
 - Added **Tesla (2010 IPO)** as a fourth line on [Post-IPO Returns](./research/post-ipo-performance.md), as a scale benchmark (the generational winner: ~+1,460% by year 5 vs the recent cohort's −80%…+40%). Because Tesla dwarfs the others, added an interactive **Log / Linear y-axis toggle** so all four stay readable on log, while linear shows the true magnitude gap.
 - Ingested Tesla figures into the [post-IPO reference](./external-sources/post-ipo-stock-performance-figures.md): IPO $17 (Jun 29 2010), day-1 close $23.89 (+40.5%), nominal year-end closes (2013 $150.43, 2014 $222.41) with split-adjusted reconciliation (15:1 total; returns split-invariant). Sources: companiesmarketcap annual performance, Tesla IR pricing release, CNBC.
 - Note: Tesla is deliberately *not* in the 2019–2021 cohort — flagged as a benchmark in-chart and in caveats. Zero dead links.
+
+## 2026-06-05: Added average + median all-IPO benchmark lines (Ritter data)
+
+- Answered "what about average returns on IPOs outside our set" by adding two dashed benchmark lines to [Post-IPO Returns](./research/post-ipo-performance.md): the **average (mean)** and **typical (median)** U.S. IPO, equal-weighted buy-and-hold from the offer price. The mean ends ~+57% at 5yr; the median is ~−22% — the dispersion (skew from a few moonshots) is the headline, and ~56% of IPOs lose money over 3 years.
+- Ingested [Ritter IPO long-run returns](./external-sources/ritter-ipo-long-run-returns.md) — text-extracted key tables (20-1 event-year returns, 16e mean/median BHR + distribution, 16f from-offer BHR, first-day pop) from Jay Ritter's *Updated Long-run Statistics* (Univ. of Florida, Apr 2026). Binary PDF preservation was attempted but the asset upload returned a server error, so fell back to the project's text-extracted pattern with source_url.
+- Added a mean-vs-median stat table + framing to the chart doc. Verified zero dead links.

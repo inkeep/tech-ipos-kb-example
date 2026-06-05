@@ -1,9 +1,9 @@
 ---
-title: "Post-IPO Returns: Recent Cohort + Tesla, IPO Day → 5 Years"
-description: An animated line-race of the return you'd have earned buying Uber,
-  Snowflake, Rivian — and Tesla, the generational benchmark — at their IPO offer
-  price, from IPO day out to five years. A demonstration of Open Knowledge's
-  live html-preview embeds.
+title: "Post-IPO Returns: Our Picks vs the Average IPO, IPO Day → 5 Years"
+description: An animated line-race of the return from buying Uber, Snowflake,
+  Rivian and Tesla at their IPO offer price, benchmarked against the average and
+  median U.S. IPO (Ritter data) — from IPO day out to five years. A
+  demonstration of Open Knowledge's live html-preview embeds.
 status: provisional
 date: 2026-06-05
 tags:
@@ -16,25 +16,26 @@ tags:
   - animated
 sources:
   - external-sources/post-ipo-stock-performance-figures.md
+  - external-sources/ritter-ipo-long-run-returns.md
   - external-sources/market-caps-may-2026.md
 ---
 ## Question
 
-If you'd bought a tech IPO **at the offer price**, what return would you be sitting on, month by month, from IPO day out to five years? This page animates the **return since IPO** for the 2019–2021 cohort — [Uber](https://companiesmarketcap.com/uber/), [Snowflake](https://companiesmarketcap.com/snowflake/), [Rivian](https://companiesmarketcap.com/rivian/) — plus [Tesla](https://companiesmarketcap.com/tesla/) (2010), included as the *generational winner* for scale. 0% = breakeven (you paid the offer price), positive = profit, negative = underwater.
+If you'd bought a tech IPO **at the offer price**, what return would you be sitting on, month by month, from IPO day out to five years — and how do our hand-picked names compare to a *typical* IPO? This page animates the **return since IPO** for [Uber](https://companiesmarketcap.com/uber/), [Snowflake](https://companiesmarketcap.com/snowflake/), [Rivian](https://companiesmarketcap.com/rivian/), and [Tesla](https://companiesmarketcap.com/tesla/) (the generational benchmark), against two dashed reference lines: the **average (mean)** and **typical (median)** U.S. IPO from [Jay Ritter's data](/external-sources/ritter-ipo-long-run-returns.md). 0% = breakeven.
 
-It doubles as a demonstration of Open Knowledge's live, themed [`html preview`](/external-sources/post-ipo-stock-performance-figures.md) embeds — the chart is a self-contained animation that re-skins to your theme, replays on demand, and toggles between log and linear scale.
+It doubles as a demonstration of Open Knowledge's live, themed [`html preview`](/external-sources/post-ipo-stock-performance-figures.md) embeds — the chart re-skins to your theme, replays on demand, and toggles log/linear scale.
 
 ## The race: your return since IPO (bought at the offer price)
 
-```html preview h=486px
+```html preview h=500px
 <div style="font-family:system-ui,sans-serif;padding:14px 16px;color:var(--foreground)">
-  <h3 style="margin:0 0 3px;font-size:15px;font-weight:650">Return since IPO — if you bought at the offer price</h3>
-  <p style="margin:0 0 10px;font-size:11.5px;line-height:1.45;color:var(--muted-foreground)">Cumulative % return buying at the IPO offer price, animated from IPO day to year 5. 0% = breakeven. <b>Tesla (2010)</b> is a different era, shown for scale — use <b>Log</b> to keep all four readable, <b>Linear</b> to see how far Tesla outruns the rest. Points are documented anchors (offer, day-1 close, peak, year-end closes), interpolated between.</p>
+  <h3 style="margin:0 0 3px;font-size:15px;font-weight:650">Return since IPO — our picks vs the average IPO</h3>
+  <p style="margin:0 0 10px;font-size:11.5px;line-height:1.45;color:var(--muted-foreground)">Cumulative % return buying at the IPO offer price, animated from IPO day to year 5. 0% = breakeven. Solid = individual stocks; <b>dashed = all-U.S.-IPO benchmarks</b> (mean &amp; median, Ritter 1980–2024). Use <b>Log</b> to keep Tesla readable. Points are documented anchors, interpolated between.</p>
   <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
     <button id="pp-replay" style="padding:4px 11px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);color:var(--foreground);cursor:pointer;font-size:12px;font-weight:600">▶ Replay</button>
     <button id="pp-scale" style="padding:4px 11px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);color:var(--foreground);cursor:pointer;font-size:12px;font-weight:600">Scale: Log</button>
     <div id="pp-clock" style="font-size:12.5px;font-weight:650;font-variant-numeric:tabular-nums">Month 0 · IPO day</div>
-    <div id="pp-legend" style="display:flex;gap:13px;margin-left:auto;font-size:11.5px;font-variant-numeric:tabular-nums;flex-wrap:wrap"></div>
+    <div id="pp-legend" style="display:flex;gap:12px;margin-left:auto;font-size:11px;font-variant-numeric:tabular-nums;flex-wrap:wrap;justify-content:flex-end"></div>
   </div>
   <svg id="pp-chart" viewBox="0 0 600 400" style="width:100%;height:auto;display:block" aria-label="Animated post-IPO return line chart"></svg>
   <script>
@@ -45,9 +46,11 @@ It doubles as a demonstration of Open Knowledge's live, themed [`html preview`](
       {name:'Uber',t:'UBER',c:'var(--chart-1)',a:[[0,100],[0.3,92],[7,66],[19,113],[31,93],[43,55],[55,137],[60,147]]},
       {name:'Snowflake',t:'SNOW',c:'var(--chart-2)',a:[[0,100],[0.2,212],[3.5,234],[14,335],[15.5,282],[27,119],[39,165],[51,128],[60,179]]},
       {name:'Rivian',t:'RIVN',c:'var(--chart-4)',a:[[0,100],[0.2,129],[0.6,220],[2,133],[14,24],[26,30],[38,17],[48,24],[55,20]]},
-      {name:'Tesla',t:'TSLA',c:'var(--chart-5)',a:[[0,100],[0.2,140],[6,157],[18,168],[30,203],[42,885],[54,1308],[60,1560]]}
+      {name:'Tesla',t:'TSLA',c:'var(--chart-5)',a:[[0,100],[0.2,140],[6,157],[18,168],[30,203],[42,885],[54,1308],[60,1560]]},
+      {name:'Average IPO (mean)',t:'AVG',c:'var(--chart-3)',dash:'7 5',a:[[0,100],[0.2,118.9],[12,125.6],[36,136.3],[60,157.2]]},
+      {name:'Typical IPO (median)',t:'MED',c:'var(--muted-foreground)',dash:'2 5',a:[[0,100],[36,83.4],[60,77.9]]}
     ];
-    var W=600,H=400,L=56,R=80,T=22,B=42,PW=W-L-R,PH=H-T-B,XM=60;
+    var W=600,H=400,L=56,R=86,T=22,B=42,PW=W-L-R,PH=H-T-B,XM=60;
     var scale='log';
     var LMIN=-100,LMAX=1500;
     var GLO=12,GHI=2000,llo=Math.log(GLO)/Math.LN10,lhi=Math.log(GHI)/Math.LN10;
@@ -83,11 +86,13 @@ It doubles as a demonstration of Open Knowledge's live, themed [`html preview`](
     // dynamic layer
     var leg=document.getElementById('pp-legend');
     COS.forEach(function(co){
-      co.line=svg('polyline',{fill:'none',stroke:co.c,'stroke-width':2.6,'stroke-linejoin':'round','stroke-linecap':'round'});S.appendChild(co.line);
-      co.dot=svg('circle',{r:4,fill:co.c,stroke:'var(--background)','stroke-width':1.5});S.appendChild(co.dot);
-      co.lab=svg('text',{'font-size':10.5,'font-weight':700,fill:co.c});S.appendChild(co.lab);
+      var la={fill:'none',stroke:co.c,'stroke-width':co.dash?2:2.6,'stroke-linejoin':'round','stroke-linecap':'round'};
+      if(co.dash)la['stroke-dasharray']=co.dash;
+      co.line=svg('polyline',la);S.appendChild(co.line);
+      co.dot=svg('circle',{r:co.dash?3:4,fill:co.c,stroke:'var(--background)','stroke-width':1.5});S.appendChild(co.dot);
+      co.lab=svg('text',{'font-size':10,'font-weight':700,fill:co.c});S.appendChild(co.lab);
       co.maxM=co.a[co.a.length-1][0];
-      co.chip=document.createElement('span');co.chip.innerHTML='<span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:'+co.c+';margin-right:4px;vertical-align:middle"></span><b>'+co.t+'</b> <span class="v"></span>';leg.appendChild(co.chip);
+      co.chip=document.createElement('span');co.chip.innerHTML='<span style="display:inline-block;width:'+(co.dash?'14px':'9px')+';height:'+(co.dash?'0':'9px')+';'+(co.dash?'border-top:2px '+(co.dash[0]==='2'?'dotted':'dashed')+' '+co.c+';':'border-radius:2px;background:'+co.c+';')+'margin-right:4px;vertical-align:middle"></span><b>'+co.t+'</b> <span class="v"></span>';leg.appendChild(co.chip);
     });
     var clock=document.getElementById('pp-clock');
     function draw(cm){
@@ -116,27 +121,34 @@ It doubles as a demonstration of Open Knowledge's live, themed [`html preview`](
 ```
 
 > [!NOTE] How to read it
-> - **Above 0%** = in profit on your IPO buy; **below 0%** = underwater. Every line starts at 0% on IPO day because you bought *at* the offer price.
-> - **Tesla (2010)** is the benchmark — **~+1,460% by year 5**, on a completely different scale from the recent cohort. On **Log** it's a steep climber among readable peers; flip to **Linear** and it rockets off the top while the other three flatten near 0% — which is the point.
-> - **Snowflake** jumps to **+112% on day one** (offer $120, opened ~$245), peaks +235% (late 2021), then round-trips most of it.
-> - **Uber** is underwater ~4.5 years (bottom ~−45% in 2022) before its +143% 2023 pushes it green.
-> - **Rivian** is the cautionary tale: briefly +120%, then −82% in 2022, still ~−80% at year 4.
+> - **Solid lines** are individual stocks; **dashed lines** are the all-U.S.-IPO benchmarks (mean & median, ~9,250 IPOs, 1980–2024).
+> - **The mean (AVG) and median (MED) tell opposite stories.** The *average* IPO is up ~+57% from the offer by year 5 — but the *median* IPO is **down ~22%**. The mean is dragged up by a thin tail of moonshots (Tesla is literally one of them); the typical IPO loses money.
+> - **Our four picks bracket the benchmarks:** Snowflake (+79%) and a recovered Uber (+47%) beat the median handily; Rivian (−80%) is deep in the losing tail; Tesla is the moonshot that *makes* the mean.
 
-## What the cohort says about the 2026 class
+## How do our four compare to the average IPO?
 
-The lines diverge so hard there's no single "average" IPO return — buying at the IPO, your four-year outcome ranged from **+1,200%** (Tesla) to **−80%** (Rivian). Tesla is the dream the others are measured against; for the recent cohort, the realistic spread was roughly **−80% to +40%**, and even the best of them (Snowflake) gave back a +235% gain.
+The answer to "what about everything outside our set" is the two dashed lines — and the gap between them is the whole point. Buying at the offer price and holding, here's the all-market picture from [Ritter's data](/external-sources/ritter-ipo-long-run-returns.md):
 
-That's the backdrop for the [2026 cohort](/research/historical-tech-ipos.md) — [SpaceX](/research/spacex.md), [OpenAI](/research/openai.md), [Anthropic](/research/anthropic.md) — debuting at valuations an order of magnitude larger. The IPO-day headline (capital raised) is what the [by-year chart](/research/historical-tech-ipos.md) measures; *this* page measures the return an IPO buyer actually earns over the following five years.
+| From the IPO **offer price** | 3 years | 5 years |
+| --- | ---: | ---: |
+| **Average (mean) IPO** | +36% | +57% |
+| **Typical (median) IPO** | −17% | −22% |
+| Share of IPOs that *lose money* (3-yr) | — | **~56%** |
+| Avg IPO vs size-matched market | underperforms by **~3.3%/yr** over years 1–5 | |
+
+So our four aren't a representative sample — **no four ever could be.** More than half of all IPOs are underwater three years on; the average looks fine only because a few giant winners (Tesla, Yahoo!, Moderna, Nvidia…) pull the mean far above the median. That's the real lesson for the [2026 cohort](/research/historical-tech-ipos.md): the headline is set by the moonshots, but the base rate is a coin-flip-to-losing bet.
+
+## What this says about the 2026 class
+
+The [2026 cohort](/research/historical-tech-ipos.md) — [SpaceX](/research/spacex.md), [OpenAI](/research/openai.md), [Anthropic](/research/anthropic.md) — debuts at valuations an order of magnitude larger than anything here. The IPO-day headline (capital raised) is what the [by-year chart](/research/historical-tech-ipos.md) measures; *this* page measures the return an IPO buyer actually earns afterward — and the base rates above are the prior any 2026 buyer is betting against.
 
 ## Method & caveats
 
-- **"Bought at the IPO"** = bought at the **offer price** ($17 Tesla / $45 Uber / $120 Snowflake / $78 Rivian). Return % = (price ÷ offer price − 1) × 100 — the price IPO-allocation investors pay. (A buyer at the *first-day close* would have a lower-starting curve.)
-- **Tesla is a 2010 IPO**, included only as a scale benchmark — not part of the 2019–2021 cohort. Its figures are nominal (pre-split) closes; Tesla later split 15:1, but **returns are split-invariant**, so the IPO-buyer return is unaffected ([detail + reconciliation](/external-sources/post-ipo-stock-performance-figures.md)).
-- **Log vs linear:** the toggle changes only the y-axis. Log keeps a 1,500%-range winner and a −80% loser on one readable chart; linear shows the true magnitude gap.
-- **Anchors, not ticks:** plotted points are the IPO offer, first-day close, post-IPO peak, and each **calendar year-end close**; the line interpolates between them — not a literal monthly series. Every figure + source is in the [compiled reference](/external-sources/post-ipo-stock-performance-figures.md).
-- **5-year reach:** Tesla, Uber, and Snowflake have a full 5 years; **Rivian** (Nov 2021) is only ~4.5 years public as of June 2026, so its line stops near month 55. Price return only (none pay a dividend).
+- **"Bought at the IPO"** = bought at the **offer price**. Return % = (price ÷ offer price − 1) × 100. Individual-stock anchors are the IPO offer, first-day close, post-IPO peak, and calendar year-end closes ([reference](/external-sources/post-ipo-stock-performance-figures.md)); the line interpolates between them — not a literal monthly series.
+- **Benchmark lines** are equal-weighted, all-U.S.-IPO buy-and-hold returns from the offer price, anchored at the average first-day return (+18.9%), the 1-year average return, and the 3- and 5-year mean/median BHR from [Ritter (1980–2024)](/external-sources/ritter-ipo-long-run-returns.md), interpolated between. They exclude offer prices under $5, SPACs, ADRs, REITs, and closed-end funds.
+- **Tesla is a 2010 IPO**, included only as a scale benchmark — nominal (pre-split) closes; returns are split-invariant. **Log vs linear** changes only the y-axis. **5-year reach:** Rivian (Nov 2021) is ~4.5 years public, so its line stops near month 55. Price return only.
 
-Source for all figures: [post-IPO stock performance reference](/external-sources/post-ipo-stock-performance-figures.md) · prior-art valuations: [market caps May 2026](/external-sources/market-caps-may-2026.md).
+Sources: [post-IPO price reference](/external-sources/post-ipo-stock-performance-figures.md) · [Ritter IPO long-run returns](/external-sources/ritter-ipo-long-run-returns.md) · [market caps May 2026](/external-sources/market-caps-may-2026.md).
 
 ## Further reading
 
