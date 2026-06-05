@@ -9,8 +9,11 @@ tags: [overview, index, ipo, ai-capital-web]
 > [!TIP] New here? Start with this page.
 > This is the front door. It explains **what** the knowledge base covers and **where to begin**, then **how** it's organized.
 
+> [!IMPORTANT] This is a public demo repository
+> This repo is a **public example** built with [**Open Knowledge**](https://github.com/inkeep/open-knowledge) — Inkeep's agent-native, local-first knowledge platform (Obsidian-grade editor + CRDT + MCP + git). It exists to **show what an Open Knowledge knowledge base looks like in practice** and is safe to share with anyone. To learn how it works or build your own, see the [Open Knowledge documentation](https://github.com/inkeep/open-knowledge).
+
 > [!CAUTION] Not financial advice — demonstration only
-> This knowledge base is an **example / demonstration project**. The companies, figures, dates, and events in it may be **provisional, inaccurate, or entirely fictional**. Nothing here is financial, investment, legal, or tax advice, and **none of it should be relied on for any decision**. It exists to demonstrate the knowledge-base workflow, not to inform real-world investing.
+> The subject matter is a **demonstration**. The companies, figures, dates, and events in it may be **provisional, inaccurate, or entirely fictional**. Nothing here is financial, investment, legal, or tax advice, and **none of it should be relied on for any decision**. It exists to demonstrate the knowledge-base workflow, not to inform real-world investing.
 
 ## What this covers
 
@@ -44,3 +47,7 @@ The **[Work Log](./log.md)** is an append-only audit trail of every change to th
 
 > [!NOTE] Why the closed loop?
 > Downstream docs cite **local** source paths, never bare web URLs — so a reader can always trace any figure to preserved evidence rather than a link that may have rotted.
+
+## Built with Open Knowledge
+
+This demo runs on [**Open Knowledge**](https://github.com/inkeep/open-knowledge) by Inkeep — a local-first, agent-native knowledge platform combining an Obsidian-grade editor, CRDT collaboration, MCP, and git. Everything you see here (the three-layer source → research → article pipeline, the live preview, the audit log) is Open Knowledge in action. See the [documentation](https://github.com/inkeep/open-knowledge) to learn more or spin up your own.
