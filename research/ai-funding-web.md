@@ -109,6 +109,55 @@ Edge colors:
 </div>
 ```
 
+The same dataset as a directed graph — node labels carry market value / valuation, arrow colors match the legend above (dashed = equity / warrant / backstop):
+
+```mermaid
+flowchart LR
+  Nvidia["Nvidia<br/>~$5.2T"]
+  Google["Alphabet<br/>~$4.2T"]
+  Microsoft["Microsoft<br/>~$3.2T"]
+  Amazon["Amazon<br/>~$2.8T"]
+  Broadcom["Broadcom<br/>~$1.9T"]
+  SpaceX["SpaceX + xAI<br/>~$1.75T"]
+  Anthropic["Anthropic<br/>~$965B"]
+  OpenAI["OpenAI<br/>~$852B"]
+  Oracle["Oracle<br/>~$410B"]
+  AMD["AMD<br/>~$400B"]
+  CoreWeave["CoreWeave<br/>~$65B"]
+  SoftBank["SoftBank"]
+
+  %% Investment into a lab (green)
+  Nvidia -->|"≤ $100B"| OpenAI
+  Amazon -->|"≤ $50B"| OpenAI
+  SoftBank -->|"$30B"| OpenAI
+  Amazon -->|"~$13B"| Anthropic
+  Google -->|"~$3B · 14%"| Anthropic
+
+  %% Compute / cloud purchase by a lab (blue)
+  OpenAI -->|"~$300B"| Oracle
+  OpenAI -->|"~$250B"| Microsoft
+  OpenAI -->|"~$350B"| Broadcom
+  OpenAI -->|"~$100B"| Nvidia
+  OpenAI -->|"~$90B"| AMD
+  OpenAI -->|"~$38B"| Amazon
+  OpenAI -->|"~$22B"| CoreWeave
+  Anthropic -->|"$100B+"| Amazon
+  Anthropic -->|"tens $B"| Google
+  Anthropic -->|"undiscl."| SpaceX
+
+  %% Equity / warrant / backstop (amber, dashed)
+  Microsoft -.->|"~27% · $135B"| OpenAI
+  OpenAI -.->|"~10% warrant"| AMD
+  Nvidia -.->|"~6% · $6.3B"| CoreWeave
+
+  linkStyle 0,1,2,3,4 stroke:var(--chart-2),stroke-width:2px
+  linkStyle 5,6,7,8,9,10,11,12,13,14 stroke:var(--chart-1),stroke-width:2px
+  linkStyle 15,16,17 stroke:var(--chart-3),stroke-width:2px
+
+  classDef lab stroke:var(--chart-5),stroke-width:3px
+  class OpenAI,Anthropic,SpaceX lab
+```
+
 ## Node dataset
 
 | Entity | Category | Market value / valuation | Public? | Basis |
