@@ -114,3 +114,9 @@ What to log:
 - Answered "what about average returns on IPOs outside our set" by adding two dashed benchmark lines to [Post-IPO Returns](./research/post-ipo-performance.md): the **average (mean)** and **typical (median)** U.S. IPO, equal-weighted buy-and-hold from the offer price. The mean ends ~+57% at 5yr; the median is ~−22% — the dispersion (skew from a few moonshots) is the headline, and ~56% of IPOs lose money over 3 years.
 - Ingested [Ritter IPO long-run returns](./external-sources/ritter-ipo-long-run-returns.md) — text-extracted key tables (20-1 event-year returns, 16e mean/median BHR + distribution, 16f from-offer BHR, first-day pop) from Jay Ritter's *Updated Long-run Statistics* (Univ. of Florida, Apr 2026). Binary PDF preservation was attempted but the asset upload returned a server error, so fell back to the project's text-extracted pattern with source_url.
 - Added a mean-vs-median stat table + framing to the chart doc. Verified zero dead links.
+
+## 2026-06-05: Fixed broken edge-color legend in the AI capital web
+
+- Fixed a non-rendering passage in [AI capital-web funding chart](./research/ai-funding-web.md): the "Edge colors" legend was raw inline `<span style="color:#hex">` HTML, which fails under MDX/JSX rendering (JSX `style` must be an object, not a string) and hardcoded off-theme hex colors.
+- Replaced it with a themed `html preview` legend wired to theme tokens (green=`--chart-2`, blue=`--chart-1`, amber-dashed=`--chart-3`), matching the doc's existing bubble-chart palette. No content/data changed — same three edge-type semantics.
+- Open follow-ups: the relationship web is still legend-only; a typed-edge diagram (mermaid or `html preview`) could make the green/blue/amber flows visible rather than just described.
