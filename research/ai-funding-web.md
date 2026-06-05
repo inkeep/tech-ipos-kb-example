@@ -150,11 +150,11 @@ flowchart LR
   OpenAI -.->|"~10% warrant"| AMD
   Nvidia -.->|"~6% · $6.3B"| CoreWeave
 
-  linkStyle 0,1,2,3,4 stroke:var(--chart-2),stroke-width:2px
-  linkStyle 5,6,7,8,9,10,11,12,13,14 stroke:var(--chart-1),stroke-width:2px
-  linkStyle 15,16,17 stroke:var(--chart-3),stroke-width:2px
+  linkStyle 0,1,2,3,4 stroke:#16a34a,stroke-width:2px
+  linkStyle 5,6,7,8,9,10,11,12,13,14 stroke:#2563eb,stroke-width:2px
+  linkStyle 15,16,17 stroke:#d97706,stroke-width:2px
 
-  classDef lab stroke:var(--chart-5),stroke-width:3px
+  classDef lab stroke-width:4px
   class OpenAI,Anthropic,SpaceX lab
 ```
 

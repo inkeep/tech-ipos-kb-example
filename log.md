@@ -120,3 +120,9 @@ What to log:
 - Fixed a non-rendering passage in [AI capital-web funding chart](./research/ai-funding-web.md): the "Edge colors" legend was raw inline `<span style="color:#hex">` HTML, which fails under MDX/JSX rendering (JSX `style` must be an object, not a string) and hardcoded off-theme hex colors.
 - Replaced it with a themed `html preview` legend wired to theme tokens (green=`--chart-2`, blue=`--chart-1`, amber-dashed=`--chart-3`), matching the doc's existing bubble-chart palette. No content/data changed — same three edge-type semantics.
 - Open follow-ups: the relationship web is still legend-only; a typed-edge diagram (mermaid or `html preview`) could make the green/blue/amber flows visible rather than just described.
+
+## 2026-06-05: Added public-demo-repo framing + Open Knowledge links to README
+
+- Reframed [README](./README.md) so the **"this is a public demo repository"** fact is front-and-center for outside readers landing via GitHub: added an `IMPORTANT` banner explaining the repo is a public example built with Open Knowledge and safe to share, and trimmed the existing `CAUTION` block to focus on the financial-disclaimer angle (no longer double-stating "demonstration project").
+- Added a **"Built with Open Knowledge"** section near the foot, both banner and footer linking to the Open Knowledge documentation (`github.com/inkeep/open-knowledge`, Inkeep's agent-native, local-first markdown-CRDT platform). Verified the canonical repo URL against npm + GitHub (npm `homepage` still points at the `-legacy` repo; `github.com/inkeep/open-knowledge` is the current project).
+- No knowledge-base content changed; only repo-meta framing. Zero dead internal links.
