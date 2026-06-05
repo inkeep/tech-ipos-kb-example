@@ -3,7 +3,6 @@ title: "Tech IPOs 2026 — Knowledge Base Overview"
 description: "Front door to this knowledge base: the impending 2026 mega-IPOs (SpaceX, OpenAI, Anthropic) and the AI capital web that connects them. Start here."
 tags: [overview, index, ipo, ai-capital-web]
 ---
-
 # Tech IPOs 2026 — Knowledge Base
 
 > [!TIP] New here? Start with this page.
@@ -17,13 +16,13 @@ tags: [overview, index, ipo, ai-capital-web]
 
 ## What this covers
 
-A focused, sourced look at the **2026 wave of mega technology IPOs** and the dense web of capital that connects them. Three companies anchor it — all three have now filed to go public (SpaceX in April, OpenAI ~May 22, Anthropic on June 1):
+A focused, sourced look at the **2026 wave of mega technology IPOs** and the dense web of capital that connects them. Three companies anchor it — all three have now filed to go public (SpaceX in April, OpenAI \~May 22, Anthropic on June 1):
 
 | Company | Valuation (mid-2026) | IPO status | Profile |
 | --- | ---: | --- | --- |
-| **SpaceX** | ~$1.75–1.8T | Filed S-1 (ticker **SPCX**); priced at a **fixed $135/share**, listing ~June 12 2026 — potentially the **largest IPO in history** | [SpaceX](./research/spacex.md) |
-| **Anthropic** | ~$965B | Filed **confidential** draft S-1 (Jun 1, 2026) — now the **#1** AI startup by value | [Anthropic](./research/anthropic.md) |
-| **OpenAI** | ~$852B | Filed **confidentially** with the SEC, targeting H2 2026 | [OpenAI](./research/openai.md) |
+| **SpaceX** | \~$1.75–1.8T | Filed S-1 (ticker **SPCX**); priced at a **fixed $135/share**, listing \~June 12 2026 — potentially the **largest IPO in history** | [SpaceX](./research/spacex.md) |
+| **Anthropic** | \~$965B | Filed **confidential** draft S-1 (Jun 1, 2026) — now the **#1** AI startup by value | [Anthropic](./research/anthropic.md) |
+| **OpenAI** | \~$852B | Filed **confidentially** with the SEC, targeting H2 2026 | [OpenAI](./research/openai.md) |
 
 Running underneath all three is the **AI "circular financing" web** — the same firms (Nvidia, Microsoft, Amazon, Google, Oracle, AMD, Broadcom, CoreWeave) acting as investors, suppliers, *and* customers of each other.
 
@@ -50,4 +49,4 @@ The **[Work Log](./log.md)** is an append-only audit trail of every change to th
 
 ## Built with Open Knowledge
 
-This demo runs on [**Open Knowledge**](https://github.com/inkeep/open-knowledge) by Inkeep — a local-first, agent-native knowledge platform combining an Obsidian-grade editor, CRDT collaboration, MCP, and git. Everything you see here (the three-layer source → research → article pipeline, the live preview, the audit log) is Open Knowledge in action. See the [documentation](https://github.com/inkeep/open-knowledge) to learn more or spin up your own.
+This demo runs on **[Open Knowledge](https://github.com/inkeep/open-knowledge)** by Inkeep — a local-first, agent-native knowledge platform combining an Obsidian-grade editor, CRDT collaboration, MCP, and git. Everything you see here (the three-layer source → research → article pipeline, the live preview, the audit log) is Open Knowledge in action. See the [documentation](https://github.com/inkeep/open-knowledge) to learn more or spin up your own.
