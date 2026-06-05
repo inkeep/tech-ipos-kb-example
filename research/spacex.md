@@ -1,13 +1,17 @@
 ---
 title: "SpaceX: IPO Outlook & Funding"
-description: "Provisional profile — SpaceX's ~$1.75T IPO filing (ticker SPCX), Starlink economics, the xAI merger, and how it touches the AI web."
+description: "Provisional profile — SpaceX's ~$1.75T IPO (ticker SPCX) priced at a fixed $135/share, Starlink economics, the xAI merger, and how it touches the AI web."
 status: provisional
 date: 2026-06-02
-tags: [research, provisional, spacex, ipo, starlink]
+tags: [ research, provisional, spacex, ipo, starlink ]
 sources:
   - external-sources/spacex-ipo-s1-filing.md
+  - external-sources/spacex-ipo-135-price.md
   - external-sources/anthropic-series-h-65b.md
 ---
+
+> [!CAUTION] Not financial advice — demonstration only
+> This is an example / demonstration project. Figures may be provisional, inaccurate, or fictional; nothing here is financial or investment advice. See the [full disclaimer](/README.md).
 
 ## Question
 
@@ -19,7 +23,7 @@ Of the three companies, SpaceX is **furthest along** — it has filed its S-1 an
 
 > [!NOTE] Snapshot (mid-2026)
 > - **IPO:** filed May 20 2026, ticker **SPCX**; expected to list **~June 11–12, 2026**
-> - **Target:** ~$1.75–1.8T valuation, raising **up to $75B** — potentially the **largest IPO in history**
+> - **Price:** **$135/share fixed** (no range) × ~555.6M shares → **~$75B** raised at **~$1.75T** — potentially the **largest IPO in history**
 > - **Lead:** Goldman Sachs; ~30% of the float earmarked for **retail**
 > - **2025 financials:** $18.7B revenue (+33%), **$4.9B net loss**
 > - **Starlink:** $11.4B revenue (~61% of total), $4.4B operating profit, ~10M subscribers
@@ -32,9 +36,10 @@ Of the three companies, SpaceX is **furthest along** — it has filed its S-1 an
 | 2025 | Tender offer | ~$350B |
 | Feb 2026 | **xAI merger** (xAI ~$80B in deal) | ~$1.25T combined *(reported; not fully reconciled)* |
 | Dec 2025 | Tender offer | ~$421/share |
-| May 2026 | **IPO filing target** | **~$1.75T** |
+| May 2026 | **IPO filing** | **~$1.75T** target |
+| Jun 2026 | **IPO price set** ($135/share fixed) | **~$1.75T** |
 
-([SpaceX S-1 filing](/external-sources/spacex-ipo-s1-filing.md)). Note the ~$1.25T Feb-merger figure and the ~$1.75T IPO target aren't cleanly reconcilable from public reporting — treated as provisional.
+([SpaceX S-1 filing](/external-sources/spacex-ipo-s1-filing.md); [$135 pricing](/external-sources/spacex-ipo-135-price.md)). As of early June, SpaceX is targeting a **fixed $135/share** offer price (~555.6M shares, ~$75B raised) rather than a conventional range — reported but unofficial until the pricing notice. Note the ~$1.25T Feb-merger figure and the ~$1.75T IPO target aren't cleanly reconcilable from public reporting — treated as provisional.
 
 ## Financials
 
@@ -62,7 +67,7 @@ In **February 2026**, SpaceX merged with **xAI**, pitching a combined "space and
 
 ## IPO mechanics & risks
 
-- **Mechanics:** Goldman-led, ~30% retail float (3× the mega-cap norm) — a deliberately retail-friendly, spectacle IPO around Musk's brand.
+- **Mechanics:** Goldman-led, ~30% retail float (3× the mega-cap norm) — a deliberately retail-friendly, spectacle IPO around Musk's brand. Priced at a **fixed $135/share** (no range), an all-primary raise that **bypasses the conventional range-then-narrow bookbuild** ([$135 pricing](/external-sources/spacex-ipo-135-price.md)).
 - **Risks:** company-wide losses, softening Starlink ARPU, an unproven orbital-AI thesis, and a valuation with **no clean comparable** (analysts note Musk's persona may matter more than fundamentals to some buyers).
 
 ## Open questions
@@ -74,4 +79,5 @@ In **February 2026**, SpaceX merged with **xAI**, pitching a combined "space and
 ## Further reading
 
 - [The AI capital web](/research/ai-funding-web.md) · [OpenAI](/research/openai.md) · [Anthropic](/research/anthropic.md)
-- Sources: [SpaceX S-1](/external-sources/spacex-ipo-s1-filing.md) · [Anthropic Series H (Colossus tie)](/external-sources/anthropic-series-h-65b.md)
+- [Historical tech IPOs by year](/research/historical-tech-ipos.md) — where SpaceX's record ~$75B raise fits against past IPOs
+- Sources: [SpaceX S-1](/external-sources/spacex-ipo-s1-filing.md) · [$135 IPO pricing](/external-sources/spacex-ipo-135-price.md) · [Anthropic Series H (Colossus tie)](/external-sources/anthropic-series-h-65b.md)

@@ -20,6 +20,9 @@ sources:
   - external-sources/anthropic-google-tpu-deal.md
   - external-sources/spacex-ipo-s1-filing.md
 ---
+> [!CAUTION] Not financial advice — demonstration only
+> This is an example / demonstration project. Figures may be provisional, inaccurate, or fictional; nothing here is financial or investment advice. See the [full disclaimer](/README.md).
+
 ## Question
 
 What's the data behind a Bloomberg-style "AI circular financing" chart — entities sized by market value, connected by typed money/compute flows — for the impending tech IPOs (OpenAI, Anthropic, SpaceX) and their counterparties?
@@ -194,5 +197,6 @@ SpaceX is *not* a node in the OpenAI/Nvidia financing loop. Its single concrete 
 ## Further reading
 
 - Company profiles: [OpenAI](/research/openai.md) · [Anthropic](/research/anthropic.md) · [SpaceX](/research/spacex.md)
+- [Historical tech IPOs by year](/research/historical-tech-ipos.md) — capital-raised chart vs past records
 - Key sources: [$1.15T infra breakdown](/external-sources/openai-infrastructure-1-15-trillion.md) · [Market caps](/external-sources/market-caps-may-2026.md) · and the per-deal sources linked in the edge table above.
 

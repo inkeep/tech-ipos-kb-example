@@ -38,3 +38,73 @@ What to log:
 - Sources ingested: [openai-122b-funding-round](./external-sources/openai-122b-funding-round.md), [openai-nvidia-10gw-partnership](./external-sources/openai-nvidia-10gw-partnership.md), [openai-amd-6gw-partnership](./external-sources/openai-amd-6gw-partnership.md), [openai-oracle-300b-stargate](./external-sources/openai-oracle-300b-stargate.md), [openai-broadcom-10gw-accelerators](./external-sources/openai-broadcom-10gw-accelerators.md), [microsoft-openai-pbc-restructuring](./external-sources/microsoft-openai-pbc-restructuring.md), [openai-coreweave-contracts](./external-sources/openai-coreweave-contracts.md), [openai-infrastructure-1-15-trillion](./external-sources/openai-infrastructure-1-15-trillion.md), [anthropic-series-h-65b](./external-sources/anthropic-series-h-65b.md), [anthropic-amazon-compute](./external-sources/anthropic-amazon-compute.md), [anthropic-google-tpu-deal](./external-sources/anthropic-google-tpu-deal.md), [spacex-ipo-s1-filing](./external-sources/spacex-ipo-s1-filing.md), [market-caps-may-2026](./external-sources/market-caps-may-2026.md), [bloomberg-ai-circular-financing-chart](./external-sources/bloomberg-ai-circular-financing-chart.md).
 - Preservation note: text sources captured as `text-extracted` (WebFetch would not reproduce full verbatim and `curl` was sandbox-blocked); the Bloomberg reference chart captured as `binary`.
 - Open follow-ups: refresh live AMD / CoreWeave market caps; watch for OpenAI & Anthropic IPO filings; reconcile SpaceX's ~$1.25T (Feb-2026 xAI merger) vs ~$1.75T (IPO target) valuations; split firm vs. contingent compute commitments.
+
+## 2026-06-05: SpaceX IPO price set — fixed $135/share
+
+- SpaceX is now targeting a **fixed $135/share** offer price (no range): ~555.6M shares ≈ ~$75B raised at ~$1.75T. Added the per-share price to the [SpaceX profile](./research/spacex.md) (snapshot, valuation trajectory, IPO mechanics, frontmatter) and refreshed now-stale "not priced / moving target" language in [README](./README.md) and [Historical tech IPOs](./research/historical-tech-ipos.md).
+- Sources ingested: [spacex-ipo-135-price](./external-sources/spacex-ipo-135-price.md) (CNBC citing Reuters, cross-referenced with TECHi S-1/A breakdown).
+- Preservation note: captured `text-extracted` (CNBC WebFetch returned 403; figures cross-referenced from TECHi).
+- Open follow-ups: confirm $135 against the effective prospectus / pricing notice once filed; watch the June 11 pricing → June 12 listing; refresh post-IPO performance tracking after SPCX debuts.
+
+
+
+## 2026-06-02: Added historical tech-IPO chart (by year)
+
+- Researched the largest tech IPO per year (1995–2026) and wrote [Historical Tech IPOs by Year](./research/historical-tech-ipos.md) — a themed capital-raised bar chart placing the 2026 cohort (esp. SpaceX's ~$75B target) against past records (Alibaba $21.8B, Facebook $16B, Rivian $11.9B, Uber $8.1B, Snowflake $3.4B, Google $1.67B, Netscape $0.14B), plus a by-year dataset table.
+- Sources ingested (`curl`, now that the sandbox is disabled): [cnbc-biggest-tech-ipos-2020](./external-sources/cnbc-biggest-tech-ipos-2020.md), [historical-tech-ipo-figures](./external-sources/historical-tech-ipo-figures.md).
+- Cross-linked the new chart from [SpaceX](./research/spacex.md) and [the AI capital web](./research/ai-funding-web.md).
+- Open follow-ups: confirm SpaceX's final raise at pricing (~$30B vs ~$75B reports); optionally add an IPO-day-valuation chart and a direct-listings view.
+
+
+
+## 2026-06-04: Added KB landing page (README)
+
+- Created [README](./README.md) as the front door — the KB had no introductory/overview page. Covers the subject (2026 mega-IPOs: SpaceX, OpenAI, Anthropic + the AI capital web), a "where to start" list pointing at the [funding chart](./research/ai-funding-web.md) and [historical IPO chart](./research/historical-tech-ipos.md), and a map of the ingest→research→consolidate layer structure.
+- No new sources or claims beyond what the linked research docs already cite; purely navigational. Verified zero dead links.
+
+
+
+## 2026-06-05: Anthropic IPO filing — ingested source + propagated to research and README
+
+- Anthropic confidentially filed a draft Form S-1 with the SEC on **Jun 1, 2026**. Ingested the primary [Rule 135 announcement](./external-sources/anthropic-confidential-s1.md) (anthropic.com), cross-checked against CNBC / TechCrunch / NPR reporting.
+- Updated [Anthropic research profile](./research/anthropic.md): snapshot + IPO-outlook status changed from "no filing yet" to filed; refreshed the open question; added the announcement to `sources:`.
+- Updated [README](./README.md): Anthropic table row + intro line now reflect that all three anchors (SpaceX, OpenAI, Anthropic) have filed.
+- Note: OpenAI's confidential filing was already reflected in the KB; this turn only adds Anthropic. Verified zero dead links.
+- Resolves the prior follow-up "watch for OpenAI & Anthropic IPO filings." Remaining: shares/price/timing not yet set for any of the three; SpaceX final raise still unconfirmed at pricing.
+
+
+
+## 2026-06-05: Added "Other 2026 Tech IPOs" survey — beyond the big three
+
+- Answered "are there other 2026 IPOs besides SpaceX/OpenAI/Anthropic?" with a provisional survey: [Other 2026 Tech IPOs](./research/other-2026-ipos.md). Covers the one *completed* large tech IPO (Cerebras) plus the filed/expected pipeline (Databricks, Stripe, Canva, Cohere, Strava, Lime), and how the AI capital web connects the whole class.
+- Sources ingested: [Cerebras IPO 2026](./external-sources/cerebras-ipo-2026.md) (TechCrunch + CNBC/TechTimes cross-ref), [Built In 2026 IPO watchlist](./external-sources/builtin-2026-ipo-watchlist.md).
+- Updated [README](./README.md): added an "Other 2026 Tech IPOs" link to "Where to start"; bumped source count (16→18) and research count (5→6).
+- **Tooling note:** OK MCP write path was unavailable this turn (session tool index exposed `write_document`, which the running v0.10.0-beta.3 server rejects; the server's `write` tool was not reachable). Files authored via native tools under the skill's escape hatch — no CRDT agent attribution for these writes. Frontmatter shape, sourcing, and link integrity kept identical to existing docs.
+- Open follow-ups: confirm which pipeline names actually price in 2026; reconcile Cerebras close-day valuation (~$66B vs ~$95B); consider adding Cerebras (OpenAI-as-customer) as a node/edge in the [AI capital web](./research/ai-funding-web.md).
+
+
+
+## 2026-06-05: Added not-financial-advice / demonstration-only disclaimers
+
+- Added a prominent `> [!CAUTION]` disclaimer to the [README](./README.md) front door (not financial/investment/legal/tax advice; example project; figures may be provisional, inaccurate, or fictional).
+- Added a compact matching disclaimer callout (linking back to the README) to all six research docs: [ai-funding-web](./research/ai-funding-web.md), [anthropic](./research/anthropic.md), [historical-tech-ipos](./research/historical-tech-ipos.md), [openai](./research/openai.md), [spacex](./research/spacex.md), [other-2026-ipos](./research/other-2026-ipos.md).
+- Scope note: `external-sources/` (raw third-party captures, already source-attributed) intentionally left without the disclaimer; can extend there if desired.
+- Tooling: OK MCP write path worked this turn (index refreshed to polymorphic `write`/`edit`). Verified zero dead links across all edited docs.
+
+## 2026-06-05: Added animated post-IPO performance chart (IPO day → 5 years)
+
+- Built [Post-IPO Performance: the 2019–2021 Cohort](./research/post-ipo-performance.md) — a self-contained, themed `html preview` **animation** (SVG line-race) of Uber, Snowflake, and Rivian, each rebased to its IPO **offer price = 100**, played from IPO day out to the 5-year mark with a replay button, a months-since-IPO clock, and live per-company index labels. Intended as a demonstration of Open Knowledge's live interactive embeds.
+- Sources ingested: [post-ipo-stock-performance-figures](./external-sources/post-ipo-stock-performance-figures.md) — IPO terms, first-day closes, post-IPO peaks, and calendar year-end closes (companiesmarketcap.com annual performance + IPO/peak/low pages; year-end closes cross-checked vs Yahoo Finance/Nasdaq; IPO terms from CNBC/Fortune).
+- Cross-linked the new chart from [README](./README.md) (where-to-start) and [Historical Tech IPOs by Year](./research/historical-tech-ipos.md) (further reading). Verified zero dead links.
+- Method note: plotted points are documented **anchors** (offer, day-1 close, peak, year-end closes) with the line interpolated between them — not a literal monthly close series; stated explicitly in the chart caveats. Each line runs to the company's real age, so Rivian (Nov 2021) stops near month 55.
+- Open follow-ups: if a true month-end series is wanted, source full monthly closes per ticker; consider adding the 2026 cohort once any of them have post-IPO trading history.
+
+## 2026-06-05: Reframed post-IPO chart as % return since IPO
+
+- Reframed [Post-IPO Returns](./research/post-ipo-performance.md) per request: y-axis is now your **cumulative % return if you bought at the IPO offer price**, with a **0% breakeven baseline** (was an offer=100 index). Same underlying anchors; only the axis framing, labels, title, and captions changed. Updated link labels in [README](./README.md) and [Historical Tech IPOs by Year](./research/historical-tech-ipos.md) to match.
+
+## 2026-06-05: Added Tesla benchmark + log/linear toggle to post-IPO returns chart
+
+- Added **Tesla (2010 IPO)** as a fourth line on [Post-IPO Returns](./research/post-ipo-performance.md), as a scale benchmark (the generational winner: ~+1,460% by year 5 vs the recent cohort's −80%…+40%). Because Tesla dwarfs the others, added an interactive **Log / Linear y-axis toggle** so all four stay readable on log, while linear shows the true magnitude gap.
+- Ingested Tesla figures into the [post-IPO reference](./external-sources/post-ipo-stock-performance-figures.md): IPO $17 (Jun 29 2010), day-1 close $23.89 (+40.5%), nominal year-end closes (2013 $150.43, 2014 $222.41) with split-adjusted reconciliation (15:1 total; returns split-invariant). Sources: companiesmarketcap annual performance, Tesla IR pricing release, CNBC.
+- Note: Tesla is deliberately *not* in the 2019–2021 cohort — flagged as a benchmark in-chart and in caveats. Zero dead links.

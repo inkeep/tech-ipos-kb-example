@@ -1,9 +1,9 @@
 ---
 name: open-knowledge
-description: "MUST invoke before reading or editing any `.md` / `.mdx` file, and before any `mcp__open-knowledge__*` tool call (`exec`, `search`, `write_document`, `edit_document`, and the rest). This skill is installed into the repository by `ok init`, so its presence alone means this is an Open Knowledge project — its runtime contract governs every markdown file here, with no need to probe for a `.ok/` directory. Authoritative agent-runtime contract; supersedes the overlapping MCP server `instructions` echo."
+description: "MUST invoke before reading or editing any `.md` / `.mdx` file, and before any `mcp__open-knowledge__*` tool call (`exec`, `search`, `write`, `edit`, and the rest). This skill is installed into the repository by `ok init`, so its presence alone means this is an Open Knowledge project — its runtime contract governs every markdown file here, with no need to probe for a `.ok/` directory. Authoritative agent-runtime contract; supersedes the overlapping MCP server `instructions` echo."
 compatibility: "Claude Code, Claude Desktop, Claude Cowork, Claude.ai web. Requires Open Knowledge MCP server + code execution."
 metadata:
-  version: "0.9.0-beta.40"
+  version: "0.10.0-beta.3"
   author: "Inkeep"
   repository: "https://github.com/inkeep/open-knowledge"
 ---
@@ -18,20 +18,27 @@ Open Knowledge (OK) is a markdown-CRDT collaboration platform exposed via MCP. T
 ## TL;DR — the 90% case
 
 1. **Reads:** `exec("cat …")` for a single doc, `exec("ls -A …")` for a directory (with folder defaults + template menu), `exec("grep …")` for literal, `search` for ranked retrieval. Native `Read` / `Grep` only on source code (`.ts` / `.py` / …), never on in-scope `.md` / `.mdx`.
-2. **Writes:** `write_document` for new or full-replace, `edit_document` for body-only find/replace, `edit_frontmatter` for 1-2 frontmatter keys (JSON Merge Patch — preferred). Full frontmatter rewrites use `write_document({ position: "replace" })`. `edit_document` rejects frontmatter (HTTP 400).
-3. **Preview:** every OK read/write response carries a route-only `previewUrl` (`/#/<doc>`, no host:port). If you have a `preview_*` tool, call `preview_start("open-knowledge-ui")`; if you have an in-app browser, call `get_preview_url` once for the full browser URL and navigate to it; on the Claude Code CLI (no browser tool), run `ok open <doc>` to open it in the OK Desktop app. Surface to the user on a `start-ui` warning (no UI running). Don't `preview_screenshot` to confirm edits — the CRDT tool response is the confirmation.
-4. **Workflow tools** (`ingest` / `research` / `consolidate` / `discover`) return procedural guides, not data. Use them when the work fits the layer; follow their numbered steps.
+2. **Writes:** `write({ document: { path, content } })` for a new or full-replace doc; `edit({ document: { path, find, replace } })` for a body find/replace; `edit({ document: { path, frontmatter } })` for a frontmatter merge-patch (`null` deletes a key). `delete({ document })` removes, `move({ from, to })` moves/renames. Body find/replace is body-only — frontmatter goes through the `frontmatter` patch. Pass a one-line `summary` (≤80 chars, user-facing outcome) on every content write — it's the timeline change-note (see §Writing).
+3. **Preview:** every OK read/write response carries a route-only `previewUrl` (`/#/<doc>`, no host:port). If you have a `preview_*` tool, call `preview_start("open-knowledge-ui")`; if you have an in-app browser, call `preview_url` once for the full browser URL and navigate to it; on the Claude Code CLI (no browser tool), run `ok open <doc>` to open it in the OK Desktop app. Surface to the user on a `start-ui` warning (no UI running). Don't `preview_screenshot` to confirm edits — the CRDT tool response is the confirmation.
+4. **Workflow guides** — `workflow({ kind: 'ingest' | 'research' | 'consolidate' | 'discover' })` returns a procedural guide, not data. Use it when the work fits the layer; follow the numbered steps.
 
 Everything below is depth. Read on demand.
 
-## Tool index — 23 tools
+## Tool index — 17 tools
 
 The full MCP surface, grouped by risk-level. Every tool's `kind` / `action` set is single-risk-level (never a read and a write behind one discriminator).
 
-- **Reads** — `exec` (primary; shell-style `cat`/`ls`/`grep`/`find` with frontmatter + backlink + history enrichment), `search` (ranked, BM25 + recency), `get_history` (versions for a doc), `links` (`kind: 'backlinks'|'forward'|'dead'|'orphans'|'hubs'|'suggest'`), `get_config` (resolved config), `get_components` (canonical component JSX schemas), `get_authoring_palette` (markdown-native authoring forms + themed `html preview` embed starters + theme tokens), `get_preview_url` (browser-reachable preview URL on demand), `share_link` (GitHub-substrate share URL for a doc; read-only against `.git/`, no commits/pushes — returns a clear error when the project has no GitHub remote, since agents do not publish projects).
-- **Writes** — `write_document` (new or full-replace; supports `template:` instantiation), `edit_document` (body-only find/replace), `edit_frontmatter` (1-2 keys via RFC 7396 JSON Merge Patch — preferred), `delete_document`, `rename` (probes file vs folder; rewrites referrers), `version` (`action: 'save'|'rollback'`), `folder_config` (`action: 'set-rule'|'write-template'|'delete-template'`). `set-rule` writes a folder's own frontmatter (open-shape, like a doc's); `write-template`/`delete-template` manage the folder's templates (what new docs start with).
-- **GitHub-sync conflicts** — `list_conflicts` (enumerate), `get_conflict_content` (base/ours/theirs stages + lifecycle), `resolve_conflict` (write a chosen resolution + commit; destructive). Mutating writes against a doc in conflict return RFC 9457 `urn:ok:error:doc-in-conflict` (409); `exec("cat …")` returns `lifecycle: {status, reason} | null` so you can detect the state proactively. See *Conflict-aware writes*.
-- **Workflow** — `ingest`, `research`, `consolidate`, `discover` (return procedural guides, not data).
+- **Reads** — `exec` (primary; shell-style `cat`/`ls`/`grep`/`find` with frontmatter + backlink + history enrichment), `search` (ranked, BM25 + recency), `history` (versions for a doc), `links` (`kind: 'backlinks'|'forward'|'dead'|'orphans'|'hubs'|'suggest'`, or an array of those for a one-call audit, e.g. `links({ kind: ["dead", "orphans", "hubs"] })`), `config` (resolved config), `palette` (markdown-native authoring forms + themed `html preview` embed starters + theme tokens; pass `components` for the canonical component JSX schemas), `preview_url` (browser-reachable preview URL on demand), `share_link` (GitHub-substrate share URL for a doc or folder; read-only against `.git/`, no commits/pushes — returns a clear error when the project has no GitHub remote, since agents do not publish projects).
+- **Writes** — four native CRUD verbs, polymorphic over `document` / `folder` / `template` / `asset` (Pattern B: per-target fields nested inside the address key; pass EXACTLY ONE target):
+  - `write` — create/overwrite a `document` (supports `document.template` instantiation), create a `folder` (with open-shape frontmatter), create a `template`, or upload an `asset`.
+  - `edit` — modify a `document` (body find/replace OR frontmatter merge-patch), a `folder` (frontmatter merge-patch), or a `template`. (No asset — binary has no text body.)
+  - `delete` — remove a `document` (name or array), `folder`, `template`, or `asset`.
+  - `move` — move/rename a `document`, `folder`, or `asset`; rewrites referrers.
+  The OUTPUT mirrors the input: `write`/`edit`/`delete` nest their result under the same target key you passed (`{ document: {…} }` / `{ folder: {…} }` / `{ template: {…} }` / `{ asset: {…} }`, or `{ documents: [...] }` for a batch). The preview envelope (`previewUrl`, `warning`, `previousPreviewUrl`) stays at the top level — same for every tool.
+  Plus `checkpoint` (save a named version) and `restore_version` (roll a doc back to a prior version). A folder's own frontmatter is open-shape exactly like a doc's (self-only, does NOT cascade into child docs); templates are what new docs in a folder start with.
+  **Self-correcting on misuse:** the few constraints JSON Schema can't express — "pass exactly one target", "`find` needs a `replace`", body-XOR-frontmatter — are enforced by a *teaching error*: a wrong call returns `isError: true` with a one-line message naming the exact corrective shape. Read it and retry with that shape; don't guess.
+- **GitHub-sync conflicts** — `conflicts` (`kind: 'list'` to enumerate, `kind: 'content'` for base/ours/theirs stages + lifecycle), `resolve_conflict` (write a chosen resolution + commit; destructive). Mutating writes against a doc in conflict return RFC 9457 `urn:ok:error:doc-in-conflict` (409); `exec("cat …")` returns `lifecycle: {status, reason} | null` so you can detect the state proactively. See *Conflict-aware writes*.
+- **Workflow** — `workflow` (`kind: 'ingest' | 'research' | 'consolidate' | 'discover'`; returns procedural guides, not data).
 
 Tools NOT in OK MCP (they belong to your agent host): `preview_start`, `preview_screenshot`, `WebFetch`, `WebSearch`, native `Read` / `Grep` / `Glob` / `Edit`. The STOP rule below governs which of those you may use on in-scope markdown.
 
@@ -45,7 +52,7 @@ When this workspace has Open Knowledge MCP configured, do **not** use your host'
 - **Dispatching the Explore / general-purpose subagent for markdown-heavy exploration** — subagents use native `Read` / `Grep` / `Glob` internally and bypass Open Knowledge entirely. Do markdown exploration yourself via `exec` / `search`. Subagents remain appropriate for **source-code** exploration.
 - **Native `Read` / `Grep` on any in-scope markdown inside `.ok/`** — the `.ok/` directory is in-scope; if it carries `.md` / `.mdx`, treat those the same as any other knowledge-base file.
 
-Why: native tools skip frontmatter, backlinks, shadow-repo activity, and project git history that OK's tools return for every matched knowledge-base file. `exec` is the primary read surface; it runs read-only bash (`cat`, `ls`, `grep`, `find`, `head`, `tail`, `wc`, `sort`, `uniq`, `cut` — pipes OK) and returns raw stdout plus enriched metadata per file.
+Why: native tools skip frontmatter, backlinks, shadow-repo activity, and project git history that OK's tools return for every matched knowledge-base file. `exec` is the primary read surface; it runs read-only bash (`cat`, `ls`, `grep`, `find`, `head`, `tail`, `wc`, `sort`, `uniq`, `cut`) and returns raw stdout plus enriched metadata per file. One command or a pipe (`|`) per call — it is NOT a shell, so `&&` / `;` / redirects are rejected; list several dirs with `ls -A a b c` or make separate calls.
 
 **MCP tool visibility — not seeing `exec` is NOT the escape hatch.** MCP wiring varies by client. Claude Code, Cursor, Codex, Windsurf, VS Code — each surfaces MCP differently. Server labels are user-defined; tools may not appear as top-level symbols named `exec` in your specific UI. If Open Knowledge is registered as an MCP server in this workspace, route markdown reads through its `exec` / `search` via your client's documented MCP invocation (including any generic "call MCP tool" flow). Registration is the test, not top-level-symbol visibility.
 
@@ -70,10 +77,10 @@ The user watches your edits land in a live browser preview. Open it once at sess
 
 **Pick how to open the preview by tool capability — not by host name.** Look at the tools actually available to you this session. If a tool can navigate to a URL, it counts as an in-app browser — match on the capability, not on what your host is called.
 
-- **You have `preview_*` tools** (e.g. `preview_start` + `preview_eval`) → **First open of the session:** to land directly on a doc, arm it first with `get_preview_url({ armPaneTarget: true, docName })` (or `folder`), then `preview_start("open-knowledge-ui")` — `ok ui` redirects the base-open straight to the armed route, so the pane opens on the doc, not root. Plain `preview_start` (no arm) opens at root. **Moving between docs once the pane is open: do it in one `preview_eval` step — set `window.location.hash` to the target's route fragment from the response `previewUrl`, the part from `#` on (e.g. `window.location.hash = '#/specs/foo/SPEC'`).** That drives the SPA router directly. Arm + `preview_start` only redirects a *fresh* open; it can't move an already-open pane (`preview_start` reuses the live process without reloading), so use `preview_eval` there. Don't read or edit `.claude/launch.json` — host-managed; the OK lock-collision proxy handles the UI-already-running case. If `preview_start` fails, report it; don't "fix" `launch.json`.
-- **No `preview_*` tool, but you have an in-app / built-in browser tool** — Codex's built-in browser, or any host tool that navigates to a URL (`browser`, `view_url`, `open_url`, `web.browse`, etc.) → call `get_preview_url` once for the **exact** target (`docName` for a doc, `folder` for a folder) and navigate your **in-app browser** straight to the returned `url`. Open that deep URL directly — never the root then navigate. Omit both args only for the root.
-- **Truly no browser-capable tool — if you have ANY tool that navigates to a URL, use the in-app branch above** (a pure stdio host with no URL-navigation tool at all, e.g. the Claude Code CLI) → for an "open `<doc>`/`<folder>`" request, run **`ok open <doc>`** (`--folder` for a folder) — opens the doc in OK Desktop via deep link (folders in the browser), with browser fallback; an action, not a URL to print. No `ok` on PATH or no shell → `get_preview_url`, then `open <url>` in the system browser as a last resort, and say so plainly. The system browser is the fallback, never the default.
-- **Honor `autoOpen`** (on `get_preview_url`, or on `warning` for write tools). If `false`, do not open or refresh any preview UI; surface the URL only if asked.
+- **You have `preview_*` tools** (e.g. `preview_start` + `preview_eval`) → **First open of the session:** to land directly on a doc, arm it first with `preview_url({ armPaneTarget: true, document })` (or `folder`), then `preview_start("open-knowledge-ui")` — `ok ui` redirects the base-open straight to the armed route, so the pane opens on the doc, not root. Plain `preview_start` (no arm) opens at root. **Moving between docs once the pane is open: do it in one `preview_eval` step — set `window.location.hash` to the target's route fragment from the response `previewUrl`, the part from `#` on (e.g. `window.location.hash = '#/specs/foo/SPEC'`).** That drives the SPA router directly. Arm + `preview_start` only redirects a *fresh* open; it can't move an already-open pane (`preview_start` reuses the live process without reloading), so use `preview_eval` there. Don't read or edit `.claude/launch.json` — host-managed; the OK lock-collision proxy handles the UI-already-running case. If `preview_start` fails, report it; don't "fix" `launch.json`.
+- **No `preview_*` tool, but you have an in-app / built-in browser tool** — Codex's built-in browser, or any host tool that navigates to a URL (`browser`, `view_url`, `open_url`, `web.browse`, etc.) → call `preview_url` once for the **exact** target (`document` for a doc, `folder` for a folder) and navigate your **in-app browser** straight to the returned `url`. Open that deep URL directly — never the root then navigate. Omit both args only for the root.
+- **Truly no browser-capable tool — if you have ANY tool that navigates to a URL, use the in-app branch above** (a pure stdio host with no URL-navigation tool at all, e.g. the Claude Code CLI) → for an "open `<doc>`/`<folder>`" request, run **`ok open <doc>`** (`--folder` for a folder) — opens the doc in OK Desktop via deep link (folders in the browser), with browser fallback; an action, not a URL to print. No `ok` on PATH or no shell → `preview_url`, then `open <url>` in the system browser as a last resort, and say so plainly. The system browser is the fallback, never the default.
+- **Honor `autoOpen`** (on `preview_url`, or on `warning` for write tools). If `false`, do not open or refresh any preview UI; surface the URL only if asked.
 
 **Opening or reading a file IS a preview navigation.** On any "open `<file>`" / "read `<file>`" request, navigate the browser to that doc's `previewUrl` route from the tool response — not a separate fetch, not a fresh system-browser launch.
 
@@ -81,12 +88,12 @@ The user watches your edits land in a live browser preview. Open it once at sess
 
 1. You opened/navigated earlier this session → don't reopen.
 2. Write response has `previewUrl` (non-null route) and NO `warning` → a browser is attached somewhere; do nothing.
-3. `warning: { action: "attach-preview-once", previewUrl, message }` → UI reachable, no browser attached; navigate one-shot (`preview_start`, or `get_preview_url` → in-app browser).
+3. `warning: { action: "attach-preview-once", previewUrl, message }` → UI reachable, no browser attached; navigate one-shot (`preview_start`, or `preview_url` → in-app browser).
 4. `warning: { action: "start-ui", previewUrl: null, message }` → no UI running anywhere. Surface the message verbatim — recovery options are in the in-band copy. Don't loop on retries.
 
 Warnings fire at most once per session in the fresh-start case.
 
-**`previewUrl: null` only means "no UI reachable" on the three attach-warning tools: `write_document` / `edit_document` / `edit_frontmatter`.** Workflow tools return prose and don't carry `previewUrl`. `delete_document` / `rename` emit `previousPreviewUrl` (different field, for closing stale tabs) and don't fire attach warnings. `get_preview_url` reports `running: false` + `url: null` when no UI is running.
+**`previewUrl: null` only means "no UI reachable" on the two attach-warning tools: `write` / `edit`.** Workflow tools return prose and don't carry `previewUrl`. `delete` / `move` emit `previousPreviewUrl` (different field, for closing stale tabs) and don't fire attach warnings. `preview_url` reports `running: false` + `url: null` when no UI is running.
 
 If you see `"Hocuspocus server is not running"`, run `ok start` and retry.
 
@@ -98,13 +105,19 @@ OK Electron and `ok ui` share `ui.lock`; when a second UI binds a different port
 
 ## Writing
 
-Call `write_document` / `edit_document` as soon as you have content. Native `Edit` / `sed` / direct `Write` on in-scope markdown is forbidden — it bypasses the CRDT and loses agent attribution in the shadow repo.
+Call `write` / `edit` as soon as you have content. Native `Edit` / `sed` / direct `Write` on in-scope markdown is forbidden — it bypasses the CRDT and loses agent attribution in the shadow repo.
 
-To author an MDX doc (the KB renders MDX/JSX components), pass a `.mdx` `docName` on the create: `write_document({ docName: "guides/widget.mdx", markdown, position: "replace" })` lands `guides/widget.mdx`. A `.md` or extension-less `docName` lands `.md`. An existing doc keeps its on-disk extension regardless of the suffix you pass — changing it in place isn't available via the MCP today.
+**Pass a `summary` on every content write (SHOULD).** `write`, `edit`, and `move` each take a one-line `summary` (≤80 chars) describing the user-facing outcome of the change — "Add gear list and permit info", not "edited trip doc". It renders as a bullet under your name in the document timeline and is the only human-readable change-note persisted to the shadow-repo history; omit it and the timeline shows *that* you wrote but not *what changed*. Write it from the reader's perspective, keep it specific, and avoid secrets or PII (it lands in git history). Each entry in the batch `documents:` form carries its own `summary`.
 
-To delete a doc, call `delete_document` — never `rm` / `unlink` / native `Bash` removal on in-scope markdown. The MCP path closes open agent sessions and unloads the doc from Hocuspocus before unlinking; native `rm` desynchronizes those. Deletion is irreversible — call `version({ action: "save" })` first if you may need to roll back (restore via `version({ action: "rollback" })`; list snapshots via `get_history`), and `links({ kind: "backlinks", docName })` first if you want to fix referrers that will become redlinks. To move or rename a doc instead of delete + rewrite, use `rename({ from, to })` — it auto-detects file vs folder and rewrites incoming references atomically.
+**Reach for visual structure where it aids comprehension.** Default to the right OK primitive over flat prose: a Callout (`> [!NOTE]`) for a key caveat, a ` ```mermaid ` diagram for a process or relationship, a table for options or comparisons, an `html preview` chart for numbers. **Call the `palette` MCP tool as you draft** (and `palette({ components })` for a canonical's JSX schema) — it returns copy-ready markdown-native forms, themed `html preview` embed starters, and the theme tokens, so the visual lands themed and in the content graph instead of hand-rolled. Don't decorate — use a visual only when it carries the point better than prose would. Full catalog: §Components.
 
-**If `edit_document` returns "Text not found" on text you can verify exists on disk** (via `exec("cat …")`), the MCP session is likely stale (e.g., after a folder rename or server restart). Treat this as the escape-hatch trigger from the STOP block: prefix your next user-visible sentence with `Open Knowledge MCP unavailable:` and report the inconsistency. Don't loop on retries — the symptom is structural, not transient.
+**Content-divergence warning (Site A gate).** `write` and `edit` responses may include a content-divergence warning when the converged Y.Text doesn't match the bytes the payload composed to (concurrent peer left residue, or — rare — a primitive regression). The write still landed; on this signal, re-read the doc (`exec("cat <path>")`) to see what actually converged before continuing. Single-doc shape: `structuredContent.document.contentDivergence = { kind: "content-divergence", intendedBytes, actualBytes, byteDelta, hint }` (the result nests under the `document` target key, mirroring the input). Batch shape: per-doc `structuredContent.documents[].contentDivergence` with the same fields. Distinct from the preview-attach `warning` field (`action: "attach-preview-once" | "start-ui"`), which stays at the top level — separate keys, can coexist.
+
+To author an MDX doc (the KB renders MDX/JSX components), pass a `.mdx` path on the create: `write({ document: { path: "guides/widget.mdx", content, position: "replace" } })` lands `guides/widget.mdx`. A `.md` or extension-less path lands `.md`. An existing doc keeps its on-disk extension regardless of the suffix you pass — changing it in place isn't available via the MCP today.
+
+To delete a doc, call `delete({ document })` — never `rm` / `unlink` / native `Bash` removal on in-scope markdown. The MCP path closes open agent sessions and unloads the doc from Hocuspocus before unlinking; native `rm` desynchronizes those. Deletion is irreversible — call `checkpoint()` first if you may need to roll back (it snapshots the whole project; afterwards restore the doc via `restore_version({ document, version })`, finding the `version` in `history`), and `links({ kind: "backlinks", document })` first if you want to fix referrers that will become redlinks. To move or rename a doc instead of delete + rewrite, use `move({ from, to })` — it auto-detects document vs folder vs asset and rewrites incoming references atomically.
+
+**If `edit` returns "Text not found" on text you can verify exists on disk** (via `exec("cat …")`), the MCP session is likely stale (e.g., after a folder rename or server restart). Treat this as the escape-hatch trigger from the STOP block: prefix your next user-visible sentence with `Open Knowledge MCP unavailable:` and report the inconsistency. Don't loop on retries — the symptom is structural, not transient.
 
 ## Conflict-aware writes
 
@@ -115,23 +128,23 @@ Projects with GitHub sync enabled may carry docs in a merge-conflict state. The 
   "type": "urn:ok:error:doc-in-conflict",
   "title": "Document is in conflict.",
   "status": 409,
-  "detail": "The document is in a merge-conflict state. Call get_conflict_content + resolve_conflict before retrying.",
+  "detail": "The document is in a merge-conflict state. Call conflicts({ kind: 'content' }) + resolve_conflict before retrying.",
   "file": "notes/sso.md",
-  "resolutionOptions": ["mine", "theirs", "content"]
+  "resolutionOptions": ["mine", "theirs", "content", "delete"]
 }
 ```
 
-The gate covers `write_document`, `edit_document`, `delete_document`, `rename`, `version` (`action: 'rollback'`), `folder_config` (`action: 'write-template'|'delete-template'`), and agent undo. You cannot route around it by writing content that byte-matches one of the merge stages — the gate refuses on lifecycle state, not on body equality.
+The gate covers `write`, `edit`, `delete`, `move`, `restore_version`, and agent undo (the doc-CRDT write spine; template/folder ops are fs-direct). You cannot route around it by writing content that byte-matches one of the merge stages — the gate refuses on lifecycle state, not on body equality.
 
 **Detect proactively.** `exec("cat <path>.md")` always returns `lifecycle: {status, reason} | null` alongside the body. When `status === 'conflict'`, switch to the resolution flow before attempting any mutation.
 
 **Resolution flow.** Three tools compose:
 
-1. `list_conflicts()` → enumerate every doc currently tracked in conflict.
-2. `get_conflict_content({ file })` → fetch `base` / `ours` / `theirs` stages plus the doc's `lifecycleStatus`. `ours` reflects the live Y.Text (what the human user sees in the editor) when the doc is loaded server-side and is marker-free; falls back to `git show :2:<file>` otherwise (e.g. after an editor reopen seeded markers into Y.Text).
-3. `resolve_conflict({ file, strategy, content? })` → write the chosen bytes and commit. Strategies: `mine` writes `git show :2:`, `theirs` writes `git show :3:`, `content` writes the bytes you supply.
+1. `conflicts({ kind: 'list' })` → enumerate every doc currently tracked in conflict.
+2. `conflicts({ kind: 'content', file })` → returns `{ content: { base, ours, theirs, shape, lifecycleStatus } }` (the result nests under the `content` kind key). `ours` reflects the live Y.Text (what the human user sees in the editor) when the doc is loaded server-side and is marker-free; falls back to `git show :2:<file>` otherwise (e.g. after an editor reopen seeded markers into Y.Text).
+3. `resolve_conflict({ file, strategy, content? })` → write the chosen bytes and commit. Strategies: `mine` runs `git checkout --ours` (your committed stage 2), `theirs` runs `git checkout --theirs` (their stage 3), `content` writes the bytes you supply, `delete` runs `git rm` (for delete-modify / modify-delete shapes where a stage is missing).
 
-`file` is a `.md` / `.mdx` path relative to the project dir (extension included) — mirrors the on-disk shape, not the extension-less `docName` used by other tools.
+`file` is a `.md` / `.mdx` path relative to the project dir (extension included) — mirrors the on-disk shape, not the extension-less `document` path used by other tools.
 
 The resolve operation is best-effort and NOT atomic: `git checkout --ours/--theirs && git add` may succeed but the subsequent `git commit --no-edit` can fail (pre-commit hook rejection, locked index). On commit failure the staged files are re-`git add`-ed back into the unmerged index and the tracked entry remains in `conflicts.json` — re-call `resolve_conflict` after the user clears the blocker.
 
@@ -147,17 +160,17 @@ OK auto-promotes markdown-native syntax into themed canonical components at pars
 | Math | `$x$` inline, `$$…$$` block | KaTeX Math |
 | Inline a doc or asset | `![[file]]` | wiki embed |
 
-`Tabs` is the lone canonical with **no** markdown-native form — write the JSX directly (`<Tabs><Tab label="…">…</Tab></Tabs>`). For any canonical's full JSX prop schema, call `get_components({ ids })`. If no canonical fits, any `<TagName>…</TagName>` falls through as raw MDX — but prefer a canonical when one matches.
+`Tabs` is the lone canonical with **no** markdown-native form — write the JSX directly (`<Tabs><Tab label="…">…</Tab></Tabs>`). For any canonical's full JSX prop schema, call `palette({ components: [ids] })`. If no canonical fits, any `<TagName>…</TagName>` falls through as raw MDX — but prefer a canonical when one matches.
 
-**Discover the palette in one call.** `get_authoring_palette` returns every markdown-native form (copy-ready `example` + `guidance`), the themed `html preview` embed starters, and the injected theme-token list — the source of truth for component-forward, themed authoring. Canonical names/counts beyond the markdown-native set are project-specific; the inventory in the `write_document` / `edit_document` descriptions and `get_components` are authoritative for those.
+**Discover the palette in one call.** `palette` returns every markdown-native form (copy-ready `example` + `guidance`), the themed `html preview` embed starters, and the injected theme-token list — the source of truth for component-forward, themed authoring. Canonical names/counts beyond the markdown-native set are project-specific; the inventory in the `write` / `edit` descriptions and `palette({ components })` are authoritative for those.
 
-**Show findings, don't just tell them.** When a point is quantitative or comparative — a trend over time, a breakdown, a before/after, a ranking, a distribution — present it visually: a chart or stat-card `html preview` embed, a ` ```mermaid ` diagram, a table, or a Callout for the headline takeaway. Prose-only buries the insight. This matters most where the document's job is to make findings legible — **`research` reports and `consolidate` articles especially**, and any write-up meant to present results. A research article with three dense paragraphs of numbers should have been a chart. Reach for `get_authoring_palette` as you draft, not after.
+**Show findings, don't just tell them.** When a point is quantitative or comparative — a trend over time, a breakdown, a before/after, a ranking, a distribution — present it visually: a chart or stat-card `html preview` embed, a ` ```mermaid ` diagram, a table, or a Callout for the headline takeaway. Prose-only buries the insight. This matters most where the document's job is to make findings legible — **`research` reports and `consolidate` articles especially**, and any write-up meant to present results. A research article with three dense paragraphs of numbers should have been a chart. Reach for `palette` as you draft, not after.
 
 ### `html preview` — themed interactive embeds
 
 A ` ```html preview ` fence (also `htm` / `xml`) renders a standalone HTML/CSS/JS page as a live sandboxed iframe — the extend-to-anything primitive for charts, stat cards, custom SVG, calculators, demos. The iframe auto-sizes to its content; pass `h=` / `w=` (e.g. ` ```html preview h=400px `) only to pin a fixed size.
 
-**Start from a starter — don't hand-roll.** `get_authoring_palette` returns `embedPatterns` (chart, stat cards, custom SVG, interactive control), each already wired to the theme tokens. Copy one and fill in your data — that is the only path that cannot render unthemed. Hand-author a fence from scratch only when no starter is close.
+**Start from a starter — don't hand-roll.** `palette` returns `embedPatterns` (chart, stat cards, custom SVG, interactive control), each already wired to the theme tokens. Copy one and fill in your data — that is the only path that cannot render unthemed. Hand-author a fence from scratch only when no starter is close.
 
 **MUST — never hardcode colors in an `html preview` embed.** OK injects its theme tokens into every preview iframe; an embed that hardcodes hex / `rgb()` renders unthemed — a white box on a dark page, clashing with every component around it. This is the single most common embed mistake. Wire every color to a token: `var(--chart-1..5)` for chart series, `var(--foreground)` / `var(--muted-foreground)` for text, `var(--card)` / `var(--background)` for surfaces, plus `var(--border)`, `var(--primary)`, `var(--radius)`. Don't set a `body` background at all unless you specifically mean to — the iframe already carries a themed one.
 
@@ -209,7 +222,7 @@ Knowledge-base docs are factual artifacts — whether the project is a wiki, an 
 - **Every link must resolve to a doc that exists.** Never link to a doc that isn't written yet. If you want to reference something that should have its own page but doesn't: create that page in the same pass, or record it as a tracked task (`TaskCreate`, or your host's task tool — if the host has none, tell the user) and leave the mention as plain prose. A broken link is debt, not a to-do marker.
 - **Never wrap a link in backticks.** `` `[text](./foo.md)` `` is a bug — the backticks make it render as literal code rather than a link.
 - **Never use HTML anchors** (`<a href="...">`). Markdown link syntax only.
-- **Verify before walking away.** After writing a doc, call `links({ kind: "dead", sourceDocNames: ["your/doc"] })` to find broken references. Fix or remove every one — a dead link is never acceptable to leave behind. Companion `links` kinds: `backlinks` (incoming), `forward` (outgoing), `orphans` (no incoming), `hubs` (high-incoming), `suggest` (untextualized mentions worth linking).
+- **Verify before walking away.** After writing a doc, call `links({ kind: "dead", sourceDocuments: ["your/doc"] })` to find broken references. Fix or remove every one — a dead link is never acceptable to leave behind. Companion `links` kinds: `backlinks` (incoming), `forward` (outgoing), `orphans` (no incoming), `hubs` (high-incoming), `suggest` (untextualized mentions worth linking).
 - **The editor's red-underline visual lies.** Its dead-link detection tolerates slug-fallback (e.g., `foo` may appear resolved because `foo.md` exists at root). `links({ kind: "dead" })` is strict-exact — trust the tool, not the visual.
 
 **Note on wiki-link syntax (`[[Page]]`):** the parser still handles it for legacy content, but it's NO LONGER the recommended default. Write new content with standard markdown links per above. Seed-pack templates (`ok seed --pack <name>`) may still emit `[[Page]]` placeholders inside template body text — those are legacy. When you instantiate a seed-pack template, replace the legacy placeholders with standard markdown links during the `{shape}`-fill pass.
@@ -259,11 +272,11 @@ A doc's frontmatter is exactly its own on-disk YAML — folder frontmatter never
 
 ### Read the folder before writing (MUST)
 
-Before creating or editing docs in a folder, **always** call `exec("ls -A <folder>")` once. The response carries the folder's own `title`/`description`/`tags` + `templates_available` (the template menu for `write_document({ template })`). Skipping this is how agents land docs that violate folder discipline.
+Before creating or editing docs in a folder, **always** call `exec("ls -A <folder>")` once. The response carries the folder's own `title`/`description`/`tags` + `templates_available` (the template menu for `write({ document: { template } })`). Skipping this is how agents land docs that violate folder discipline.
 
 Pre-write checklist:
 
-0. **First-contact check.** If the folder has no frontmatter of its own AND `templates_available` is empty AND `exec("ls -A")` shows substantial content elsewhere, the project hasn't been onboarded — STOP and invoke `discover` (Workflow tools below). Skip on subsequent writes once confirmed.
+0. **First-contact check.** If the folder has no frontmatter of its own AND `templates_available` is empty AND `exec("ls -A")` shows substantial content elsewhere, the project hasn't been onboarded — STOP and invoke `workflow({ kind: 'discover' })` (Workflow guides below). Skip on subsequent writes once confirmed.
 1. **Read the folder's description** — its `title`/`description`/`tags` tell you what the folder is for. (These describe the folder; they are NOT defaults the doc inherits.)
 2. **Read `templates_available`** — each entry has `name`, `title`, `description`, `scope` (`local` / `inherited`). If one matches, **prefer it** over free-form markdown (it's the folder's contract — templates carry frontmatter + body structure hand-authored docs routinely miss).
 3. **Read recent siblings** — new docs should match the shape of existing ones (filename, frontmatter, body structure).
@@ -273,53 +286,55 @@ Pre-write checklist:
 
 ### When to use a template (MUST when one fits)
 
-Instantiate via `write_document({ template, docName, position: "replace" })`. Inherited templates (`scope: "inherited"`) are equally valid. Skip only when (a) `templates_available` is empty, (b) no entry matches, OR (c) the user asked for free-form. If you skip, briefly note why in chat.
+Instantiate via `write({ document: { path, template } })`. Inherited templates (`scope: "inherited"`) are equally valid. Skip only when (a) `templates_available` is empty, (b) no entry matches, OR (c) the user asked for free-form. If you skip, briefly note why in chat.
 
 ### When to create a template
 
 Templates make folder structure durable. Create them proactively:
 
-- 2+ sibling docs share a skeleton in a folder with no template → extract via `folder_config({ action: "write-template" })`.
+- 2+ sibling docs share a skeleton in a folder with no template → extract via `write({ template })`.
 - About to write a doc in a folder where no template fits, AND the shape is reusable → save as template the same turn.
-- Scaffolding a new folder for a doc category → pair the rule (`folder_config({ action: "set-rule" })`) with a template in the same turn.
+- Scaffolding a new folder for a doc category → pair `write({ folder })` (or `edit({ folder })`) with `write({ template })` in the same turn.
 - The user describes a recurring doc shape ("we always log meetings with attendees, agenda, action items") → author the template once.
 
 Note new templates in chat ("saved as a template at `meetings/.ok/templates/prep-notes.md` for next time") so the user sees the discipline grew.
 
+**Keep starter content clean (MUST).** A template body is a reusable skeleton, not a meta-prompt: section headings, real frontmatter, and SHORT `{Stub}` placeholders (e.g. `# {Meeting Title}`). Do NOT bake a workflow's verbose `{...}` prompt-paragraphs (the `research` / `consolidate` shape guidance is for filling ONE doc, not for persisting into every new one), do NOT duplicate sections, and do NOT save a half-filled or in-progress doc as a template. Long "how to fill this" guidance belongs in the folder description, not in the body each new doc inherits. After saving, `exec("cat <folder>/.ok/templates/<name>.md")` and eyeball it — a template propagates to every doc made from it, so a garbled one is a recurring defect, not a one-off.
+
 ### When recurring per-doc properties emerge (MUST when a pattern emerges)
 
-If you're writing the same frontmatter (tags, status, a title prefix) on multiple siblings, bake those starting values into a **template** (`folder_config({ action: "write-template" })`) — that's the single mechanism for new-doc starting properties. Folder frontmatter does not cascade values into docs.
+If you're writing the same frontmatter (tags, status, a title prefix) on multiple siblings, bake those starting values into a **template** (`write({ template })`) — that's the single mechanism for new-doc starting properties. Folder frontmatter does not cascade values into docs.
 
 ### Editing a folder's own description
 
 ```ts
-folder_config({
-  action: "set-rule",
-  rules: [
-    { match: "meetings/**", frontmatter: { title: "Meetings", description: "Meeting notes", tags: ["meeting"] } },
-  ],
-})
-```
-
-`frontmatter` is open-shape — any key about the folder itself, exactly like a doc's frontmatter (`title` / `description` / `tags` are conventional keys the UI surfaces). It's self-only: it describes the folder and does NOT flow into child docs — put per-doc starting values in a template instead. Each `match` resolves to a SINGLE target folder. Multi-folder globs (`specs/*/evidence/**`) are rejected with `MULTI_FOLDER_GLOB` — split per folder. Remove a rule by passing empty `frontmatter: {}` — file deletes and `.ok/` auto-cleans if no other tenant remains.
-
-### Creating templates
-
-```ts
-folder_config({
-  action: "write-template",
-  folder: "meetings/",
-  name: "prep-notes",
-  body: "# {Meeting Title}\n\n**Attendees:** \n**Date:** \n\n## Agenda\n- \n",
-  frontmatter: {
-    title: "Meeting Prep Notes",          // REQUIRED — TEMPLATE_TITLE_REQUIRED if missing
-    description: "Use before a meeting.", // recommended — soft warning if absent
-    tags: ["meeting", "prep"],
+edit({
+  folder: {
+    path: "meetings",
+    frontmatter: { title: "Meetings", description: "Meeting notes", tags: ["meeting"] },
   },
 })
 ```
 
-**Substitution allowlist:** template bodies MAY use exactly two server-side substitutions — `{{date}}` (today's ISO-8601 date) and `{{user}}` (calling principal display name). Other `{{...}}` tokens are rejected at write time with `TEMPLATE_UNKNOWN_VARIABLE`. Plain `{shape}` placeholders (e.g., `{Meeting Title}`) are LITERAL — agents fill via subsequent `edit_document` calls. Delete a template via `folder_config({ action: "delete-template", folder, name })` (auto-cleans empty `.ok/templates/` and `.ok/`).
+`frontmatter` is open-shape — any key about the folder itself, exactly like a doc's frontmatter (`title` / `description` / `tags` are conventional keys the UI surfaces). It's self-only: it describes the folder and does NOT flow into child docs — put per-doc starting values in a template instead. Each call targets a SINGLE folder by its own `path` (no globs). Use `write({ folder })` to create a new folder, `edit({ folder })` to change an existing one (merge-patch). Clear the folder's frontmatter by passing `frontmatter: {}`, or drop one key with `frontmatter: { key: null }` — the file deletes when empty and `.ok/` auto-cleans if no other tenant remains.
+
+### Creating templates
+
+```ts
+write({
+  template: {
+    path: "meetings/prep-notes",
+    content: "# {Meeting Title}\n\n**Attendees:** \n**Date:** \n\n## Agenda\n- \n",
+    frontmatter: {
+      title: "Meeting Prep Notes",          // REQUIRED — TEMPLATE_TITLE_REQUIRED if missing
+      description: "Use before a meeting.", // recommended — soft warning if absent
+      tags: ["meeting", "prep"],
+    },
+  },
+})
+```
+
+**Substitution allowlist:** template bodies MAY use exactly two server-side substitutions — `{{date}}` (today's ISO-8601 date) and `{{user}}` (calling principal display name). Other `{{...}}` tokens are rejected at write time with `TEMPLATE_UNKNOWN_VARIABLE`. Plain `{shape}` placeholders (e.g., `{Meeting Title}`) are LITERAL — agents fill via subsequent `edit` calls. Delete a template via `delete({ template: { path } })` (auto-cleans empty `.ok/templates/` and `.ok/`).
 
 ### Creating a doc from a template
 
@@ -328,21 +343,22 @@ folder_config({
 exec("ls -A meetings/")
 // → templates_available: [{ name: "prep-notes", title: "Meeting Prep Notes", scope: "local" }, ...]
 
-// Instantiate. `template` and `markdown` are mutually exclusive.
-write_document({
-  docName: "meetings/2026-05-02-roadmap-sync",
-  template: "prep-notes",
-  position: "replace",
+// Instantiate. `template` and `content` are mutually exclusive.
+write({
+  document: {
+    path: "meetings/2026-05-02-roadmap-sync",
+    template: "prep-notes",
+  },
 })
 
-// Fill the `{shape}` placeholders via follow-up edit_document calls.
+// Fill the `{shape}` placeholders via follow-up edit calls.
 ```
 
-Templates resolve via leaf → root walk-up at the target's parent folder, closest-wins on filename collision. **`template` and `markdown` are mutually exclusive** — passing both errors with `TEMPLATE_AND_MARKDOWN_BOTH_SET`. Substitution happens at instantiation time only; templates on disk show the raw `{{date}}` token.
+Templates resolve via leaf → root walk-up at the target's parent folder, closest-wins on filename collision. **`template` and `content` are mutually exclusive** — passing both errors with `TEMPLATE_AND_CONTENT_BOTH_SET`. Substitution happens at instantiation time only; templates on disk show the raw `{{date}}` token.
 
 ### Editing frontmatter
 
-`edit_document` does NOT change frontmatter (body-only; frontmatter-intersecting find/replace returns HTTP 400). For single-key edits, prefer `edit_frontmatter({ docName, patch: { key: value } })` — JSON Merge Patch (RFC 7396), `null` deletes, field-level CRDT merge, atomic per-call. For full rewrites (≥3-5 keys, or body + frontmatter together), call `write_document({ position: "replace", markdown })` and include the new YAML block.
+`edit({ document: { path, find, replace } })` does NOT change frontmatter (body-only; frontmatter-intersecting find/replace returns HTTP 400). For metadata, use `edit({ document: { path, frontmatter: { key: value } } })` — JSON Merge Patch (RFC 7396), `null` deletes, field-level CRDT merge, atomic per-call. For a full rewrite (body + frontmatter together), call `write({ document: { path, content, frontmatter, position: "replace" } })`.
 
 ### Binary-source wrappers (`ingest`-produced)
 
@@ -394,7 +410,7 @@ The skill carries the trigger ("KB content changed this turn — go look"). The 
 | Read an individual doc                          | `Read: specs/foo/SPEC.md`                                                          | `exec("cat specs/foo/SPEC.md")`                                                   |
 | Explore a markdown-heavy dir                    | `Agent(Explore): "..."`                                                            | Do `exec`-based exploration yourself                                              |
 | Wait for the server to tell you to open preview | Skip the session-start preview open and wait for the `attach-preview-once` hint    | Open the preview browser at session start; the hint is a fallback when you didn't |
-| Ignore the attach hint                          | Skip the `warning: { action: "attach-preview-once" }` hint in write-tool responses | Open the preview when the hint fires (`preview_start`, or `get_preview_url`); otherwise do nothing |
+| Ignore the attach hint                          | Skip the `warning: { action: "attach-preview-once" }` hint in write-tool responses | Open the preview when the hint fires (`preview_start`, or `preview_url`); otherwise do nothing |
 | Make the Claude Code Desktop preview work       | Read / diagnose / edit `.claude/launch.json` (host-managed config)                 | Call `preview_start("open-knowledge-ui")` and nothing else; the OK lock-collision proxy bridges any port mismatch transparently |
 | Open a doc in the app from the Claude Code CLI  | Print the `previewUrl` / `openknowledge://` string for the user to click           | Run `ok open <doc>` — it opens the OK Desktop app (folders open in the browser), with browser fallback |
 | Reference another doc                           | `` `[text](./page.md)` `` (backticked) or HTML `<a>`                               | `[text](./page.md)` (raw markdown)                                                |
@@ -403,31 +419,31 @@ The skill carries the trigger ("KB content changed this turn — go look"). The 
 | Cite a web source you just fetched              | inline `[source](https://...)` because YOU did the fetch (not the user)            | `ingest` it — agent-initiated fetches are not exempt from the closed-loop rule    |
 | Finish a turn that changed KB content           | move on without checking for a log                                                 | check for a `log.md` and follow its contract per Log discipline                    |
 | Add an image                                    | empty alt `![](./x.png)` or generic alt `![image](./x)`                            | meaningful alt + source caption below                                             |
-| Catalog folder contents                         | create `INDEX.md` hub file                                                         | `folder_config({ action: "set-rule", rules: [...] })` writes `<folder>/.ok/frontmatter.yml` |
-| Write a doc in an unfamiliar folder             | go straight to `write_document` with hand-authored markdown                        | `exec("ls -A <folder>")` first — read the folder description + `templates_available` before writing |
-| Land in an existing repo without orienting      | go straight to `write_document` when no folder frontmatter / templates exist       | invoke `discover` once for the project — extracts conventions from siblings, sets folder frontmatter + templates, activates the link graph |
-| Author a doc when a matching template exists    | `write_document({ markdown: "..." })` from scratch                                 | `write_document({ template, position: "replace" })` — templates carry the folder's frontmatter + body discipline |
-| Change a doc's title / tags                     | `edit_document` to swap the YAML (rejected — HTTP 400 frontmatter-intersect)       | `edit_frontmatter({ docName, patch })` for 1-2 keys; `write_document({ position: "replace", markdown })` for full rewrites |
-| Repeat the same frontmatter on sibling docs     | hand-set identical `tags` / `title` prefix on every new file                       | `folder_config({ action: "write-template" })` once — new docs start from the template |
-| Re-derive the same body skeleton repeatedly     | copy-paste the structure from a sibling each time                                  | `folder_config({ action: "write-template" })` once, then pick from `templates_available` thereafter |
-| Scaffold a new folder for a doc category        | set folder rule for frontmatter and stop there                                     | pair `folder_config({ action: "set-rule" })` with `folder_config({ action: "write-template" })` in the same turn |
-| Delete a markdown doc                           | `Bash: rm` / `unlink` / native deletion on in-scope `.md`                          | `delete_document` — `version({ action: "save" })` first if rollback may be needed |
+| Catalog folder contents                         | create `INDEX.md` hub file                                                         | `edit({ folder: { path, frontmatter } })` writes `<folder>/.ok/frontmatter.yml` |
+| Write a doc in an unfamiliar folder             | go straight to `write` with hand-authored markdown                        | `exec("ls -A <folder>")` first — read the folder description + `templates_available` before writing |
+| Land in an existing repo without orienting      | go straight to `write` when no folder frontmatter / templates exist       | invoke `workflow({ kind: 'discover' })` once for the project — extracts conventions from siblings, sets folder frontmatter + templates, activates the link graph |
+| Author a doc when a matching template exists    | `write({ document: { path, content: "..." } })` from scratch                                 | `write({ document: { path, template } })` — templates carry the folder's frontmatter + body discipline |
+| Change a doc's title / tags                     | `edit({ document: { path, find, replace } })` to swap the YAML (rejected — HTTP 400 frontmatter-intersect) | `edit({ document: { path, frontmatter } })` for metadata; `write({ document: { path, content, frontmatter, position: "replace" } })` for full rewrites |
+| Repeat the same frontmatter on sibling docs     | hand-set identical `tags` / `title` prefix on every new file                       | `write({ template })` once — new docs start from the template |
+| Re-derive the same body skeleton repeatedly     | copy-paste the structure from a sibling each time                                  | `write({ template })` once, then pick from `templates_available` thereafter |
+| Scaffold a new folder for a doc category        | set folder frontmatter and stop there                                     | pair `edit({ folder })` with `write({ template })` in the same turn |
+| Delete a markdown doc                           | `Bash: rm` / `unlink` / native deletion on in-scope `.md`                          | `delete({ document })` — `checkpoint()` first if rollback may be needed |
 | Fork a skill and expect no stomp                | Edit installed SKILL.md                                                            | `npx skills remove` before CLI upgrade                                            |
 
 ## Workflow tools — when to invoke them
 
-Four MCP tools build on the primitives above. **They return *procedural guidance* (a multi-step instructional body), not fetched data.** Calling `ingest("https://…")` does not download and write a doc for you — it returns a multi-step plan you then execute. Same for `research` / `consolidate` / `discover`. Plan to follow the numbered steps in order; don't skip the STOP gates.
+One MCP tool — `workflow` — builds on the primitives above, dispatched on `kind`. **It returns *procedural guidance* (a multi-step instructional body), not fetched data.** Calling `workflow({ kind: 'ingest', source: "https://…" })` does not download and write a doc for you — it returns a multi-step plan you then execute. Same for the `research` / `consolidate` / `discover` kinds. Plan to follow the numbered steps in order; don't skip the STOP gates.
 
-Three correspond to [Karpathy's three-layer knowledge-base pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) (`ingest` / `research` / `consolidate`); the fourth (`discover`) operates at the project-metadata layer and is the brownfield counterpart to the greenfield `ok seed` CLI:
+Three kinds correspond to [Karpathy's three-layer knowledge-base pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) (`ingest` / `research` / `consolidate`); the fourth (`discover`) operates at the project-metadata layer and is the brownfield counterpart to the greenfield `ok seed` CLI:
 
-| Tool          | Layer                   | When to invoke                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `kind`        | Layer                   | When to invoke (via `workflow({ kind })`)                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ingest`      | Raw sources (immutable) | User shares a URL/PDF/file to preserve verbatim, **OR you fetched a URL** (`WebFetch` / `WebSearch` / equivalent) to ground a claim that's about to land in the knowledge base. The KB is closed-loop — agent-initiated fetches are not exempt. **Binary sources** (PDFs, images, audio, Office docs) are preserved verbatim, not text-scraped — the tool body documents the binary-vs-text classification, write-path STOP gates (executable, size, scheme), re-ingest semantics, and shell-less fallback. No analysis in the file itself — takeaways go back to the user in chat. |
 | `research`    | KB, provisional         | User asks you to investigate, compare alternatives, or synthesize multiple sources. Produces a `status: provisional` article with a `sources:` list. Follows scan-first routing, a STOP scoping gate, 3P-external framing, and a validate checklist — the tool body enforces each step. |
 | `consolidate` | KB, canonical           | Team has actually decided after research and wants the outcome committed as source-of-truth. Starts with a STOP gate confirming the decision exists; writes a `status: canonical` article with a `supersedes:` chain.                                                                   |
 | `discover`    | Project metadata        | First arrival at a repo with existing content AND no folder frontmatter / templates set. Extracts conventions from siblings; activates the link graph (orphans, hubs, untextualized mentions); proposes folder frontmatter + templates + `.okignore`; per-phase user confirmation. Phases 1-4 run fs-direct; Phase 5 (link-graph activation) needs `ok start` (Phase 5 step 0 gates). Skip on empty repos (use `ok seed`). One-shot; idempotent on re-run. |
 
-**These tools are your default move, not `write_document`.** When the work fits one of the three layers — preserving an external source, investigating/synthesizing, committing a decided outcome — invoke the corresponding tool instead of going straight to `write_document` / `edit_document`. The tool bodies enforce framing (sources, status, supersedes chains) that hand-written articles routinely miss. `write_document` is correct for everything that does **not** fit the three layers (specs, runbooks, scratch notes, project pages); for the three that do, lead with the tool. This is doubly true in projects that ran `ok seed` — a doc landing in `external-sources/` / `research/` / `articles/` should have come out of `ingest` / `research` / `consolidate`.
+**These tools are your default move, not `write`.** When the work fits one of the three layers — preserving an external source, investigating/synthesizing, committing a decided outcome — invoke the corresponding tool instead of going straight to `write` / `edit`. The tool bodies enforce framing (sources, status, supersedes chains) that hand-written articles routinely miss. `write` is correct for everything that does **not** fit the three layers (specs, runbooks, scratch notes, project pages); for the three that do, lead with the tool. This is doubly true in projects that ran `ok seed` — a doc landing in `external-sources/` / `research/` / `articles/` should have come out of `ingest` / `research` / `consolidate`.
 
 Typical day-2 flow: user shares a URL → `ingest` (preserve) → user asks "now research this" → `research` (provisional article + `ingest`s more sources as needed) → decision lands → `consolidate` (canonical article, supersedes the research).
 
@@ -435,18 +451,18 @@ Typical day-2 flow: user shares a URL → `ingest` (preserve) → user asks "now
 
 **Do not chain silently.** After `ingest`, ask the user whether to proceed to `research`. After `research`, let the user decide whether the findings are ready to `consolidate`. Each tool completes on its own terms — the user drives the transitions.
 
-**Repeat invocations.** Workflow tools return their full instructional body on every call, including 2nd / 3rd / Nth invocation in the same session. If you've already received a tool's body earlier this session, you can skim the repeat for changes (the body can evolve across server versions) but you don't need to re-internalize it — proceed to the next step with the new arguments.
+**Repeat invocations.** The `workflow` tool returns its full instructional body on every call, including 2nd / 3rd / Nth invocation in the same session. If you've already received a tool's body earlier this session, you can skim the repeat for changes (the body can evolve across server versions) but you don't need to re-internalize it — proceed to the next step with the new arguments.
 
-**Project scaffolding — two paths.** **Empty repo:** run `ok seed` once from a terminal (scaffolds Karpathy three-layer + seeds `log.md` + registers folder defaults). **Existing content:** invoke `discover` (MCP tool, table above — extracts conventions from siblings, sets folder frontmatter + templates, curates `.okignore`, activates link graph; per-phase confirmation gates). Neither is required; the four workflow tools work against any folder structure. Only mention each when explicitly relevant.
+**Project scaffolding — two paths.** **Empty repo:** run `ok seed` once from a terminal (scaffolds Karpathy three-layer + seeds `log.md` + registers folder defaults). **Existing content:** invoke `workflow({ kind: 'discover' })` (table above — extracts conventions from siblings, sets folder frontmatter + templates, curates `.okignore`, activates link graph; per-phase confirmation gates). Neither is required; the four workflow kinds work against any folder structure. Only mention each when explicitly relevant.
 
 ## Server lifecycle
 
-If `write_document` or `edit_document` returns a "Hocuspocus server is not running" error, start it with `ok start` (via Bash) and retry. Never fall back to native `Edit` / `Write` for in-scope markdown — always route through the MCP write tools so edits go through the CRDT with proper attribution.
+If `write` or `edit` returns a "Hocuspocus server is not running" error, start it with `ok start` (via Bash) and retry. Never fall back to native `Edit` / `Write` for in-scope markdown — always route through the MCP write tools so edits go through the CRDT with proper attribution.
 
 ## Scope recap
 
-Open Knowledge looks for documents under the resolved `content.dir` (discoverable at runtime via `get_config({ path: ['content', 'dir'] })`). `.gitignore` and `.okignore` (at the project root and at any folder depth) define exclusions. A folder's own metadata + templates live in nested `<folder>/.ok/frontmatter.yml` + `<folder>/.ok/templates/` — NOT in `.ok/config.yml`.
+Open Knowledge looks for documents under the resolved `content.dir` (discoverable at runtime via `config({ key: 'content.dir' })`). `.gitignore` and `.okignore` (at the project root and at any folder depth) define exclusions. A folder's own metadata + templates live in nested `<folder>/.ok/frontmatter.yml` + `<folder>/.ok/templates/` — NOT in `.ok/config.yml`.
 
 Default mental model (no jargon): **every `.md` and `.mdx` under `content.dir`** not excluded by `.gitignore` or `.okignore` is an Open Knowledge document — including under `specs/`, `reports/`, `docs/`, etc. Read `.okignore` (and any nested `.okignore` files) once per turn to know what's excluded.
 
-**First session in this project?** If substantial folders have no frontmatter of their own and no `templates_available`, the project isn't onboarded — invoke `discover` (Workflow tools table) before writing.
+**First session in this project?** If substantial folders have no frontmatter of their own and no `templates_available`, the project isn't onboarded — invoke `workflow({ kind: 'discover' })` before writing.

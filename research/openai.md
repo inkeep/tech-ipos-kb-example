@@ -14,6 +14,9 @@ sources:
   - external-sources/openai-coreweave-contracts.md
   - external-sources/openai-infrastructure-1-15-trillion.md
 ---
+> [!CAUTION] Not financial advice — demonstration only
+> This is an example / demonstration project. Figures may be provisional, inaccurate, or fictional; nothing here is financial or investment advice. See the [full disclaimer](/README.md).
+
 ## Question
 
 Where does OpenAI stand on the path to an IPO, and how is it wired into the AI capital web?
