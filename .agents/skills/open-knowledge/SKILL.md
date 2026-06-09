@@ -3,7 +3,7 @@ name: open-knowledge
 description: "MUST invoke before reading or editing any `.md` / `.mdx` file, and before any `mcp__open-knowledge__*` tool call (`exec`, `search`, `write`, `edit`, and the rest). This skill is installed into the repository by `ok init`, so its presence alone means this is an Open Knowledge project — its runtime contract governs every markdown file here, with no need to probe for a `.ok/` directory. Authoritative agent-runtime contract; supersedes the overlapping MCP server `instructions` echo."
 compatibility: "Claude Code, Claude Desktop, Claude Cowork, Claude.ai web. Requires Open Knowledge MCP server + code execution."
 metadata:
-  version: "0.10.0-beta.5"
+  version: "0.10.0-beta.10"
   author: "Inkeep"
   repository: "https://github.com/inkeep/open-knowledge"
 ---
@@ -197,6 +197,8 @@ const c1 = getComputedStyle(document.documentElement).getPropertyValue('--chart-
 ```
 
 **Boundary.** Reach for a canonical (via its markdown-native form) when one matches the semantic need — it is themed and integrated. Reach for ` ```html preview ` for interactive or bespoke content no canonical covers. ` ```<lang> ` fences for other languages are plain syntax-highlighted code, no preview.
+
+**External resources load directly.** The preview iframe has open network access — an embed can load external stylesheets, `fetch` live data, pull map tiles / remote images, use web fonts, or embed third-party iframes over `https:`. A Leaflet map, a live-`fetch` chart, or a Google-Font embed renders with no extra setup. The iframe is a sandboxed null-origin frame, so an embed can reach the network but can never read the knowledge base, cookies, or auth. (`'unsafe-eval'` is not granted — Chart.js / Leaflet / Plotly don't need it; a library that compiles expression strings at runtime won't run.)
 
 ## Grounding — every factual claim needs a source (MUST)
 

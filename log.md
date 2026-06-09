@@ -132,3 +132,64 @@ What to log:
 - Reframed [README](./README.md) so the **"this is a public demo repository"** fact is front-and-center for outside readers landing via GitHub: added an `IMPORTANT` banner explaining the repo is a public example built with Open Knowledge and safe to share, and trimmed the existing `CAUTION` block to focus on the financial-disclaimer angle (no longer double-stating "demonstration project").
 - Added a **"Built with Open Knowledge"** section near the foot, both banner and footer linking to the Open Knowledge documentation (`github.com/inkeep/open-knowledge`, Inkeep's agent-native, local-first markdown-CRDT platform). Verified the canonical repo URL against npm + GitHub (npm `homepage` still points at the `-legacy` repo; `github.com/inkeep/open-knowledge` is the current project).
 - No knowledge-base content changed; only repo-meta framing. Zero dead internal links.
+
+## 2026-06-05: Added a live TSLA ticker as an html-preview embed
+
+- Built **Live TSLA Ticker** (`research/tsla-live-ticker.md`, since removed) — a self-contained, themed `html preview` widget that fetches **real close-of-day** Tesla quotes and renders a ticker card (price, day-over-day change, prev close, open, day range, 52-week range) with a status indicator and a manual Refresh; auto-polls every 60s.
+- **No API key in the repo** (per request): reads Yahoo Finance's public chart endpoint through a keyless, CORS-friendly proxy (`api.allorigins.win`, fallback `api.codetabs.com`). Day-over-day change is computed against the prior trading day's close from the daily-close series (avoids Yahoo's `chartPreviousClose`, which is the range-start close); open is read from the latest daily candle. Every color is a theme token (green=`--chart-2`, red=`--destructive`); degrades to *Data unavailable — retrying…* when both proxies are rate-limited.
+- Cross-linked from [README](./README.md) (where-to-start). Verified zero dead links.
+- Verification note: the fetch+proxy+parse logic was confirmed working in a standalone browser this session (rendered live: $391.00, −6.56% vs prior close). Could **not** visually confirm it inside OK's live preview this session — the preview pane returned intermittent 502s and didn't render doc bodies, so the open question of whether OK's `html preview` iframe sandbox permits the cross-origin fetch is unverified in-app.
+- Caveat: public CORS proxies are best-effort (demo-grade, not production); "live" = last close, not streaming intraday.
+- Open follow-ups: confirm the live fetch renders in the OK preview iframe (sandbox/CSP `connect-src`); if blocked, consider a same-origin data shim or a static snapshot fallback. Optionally parameterize the symbol.
+
+## 2026-06-05: First canonical article — the AI capital web
+
+- Populated the previously-empty `articles/` (consolidate) layer with its first canonical entry: [The AI Capital Web — Canonical Reference](./articles/ai-capital-web.md). Instantiated from the folder's `article` template, then filled it: a stable source-of-truth *framing* of the capital web — the three edge types (investment / compute purchase / equity-warrant), the anchor nodes, the mermaid web diagram, and the canonical definition of "circular financing."
+- Marked it `status: canonical` with `supersedes: [research/ai-funding-web.md]` — the article owns the framing; the provisional [research doc](./research/ai-funding-web.md) keeps the volatile detail (snapshot valuations, full node/edge dataset, per-deal sources). The evidence chain stays traceable: article → research → `external-sources/`.
+- Linked it from [README](./README.md) (replaced the stale "Articles — none yet" note), so the demo now shows all three Karpathy layers populated. Verified zero dead links in the new article.
+- Note: this was a demonstration of the consolidate *mechanism* (template → canonical → supersedes chain), not a new market claim — the canonical content is descriptive and rests entirely on existing research.
+- Open follow-ups: none — keep the article stable; update only when a new decision supersedes it.
+
+## 2026-06-05: TSLA ticker — OK embeds block live fetch (CSP), switched to snapshot
+
+- Followed up on the live-ticker attempt: verified in the OK preview that every `html preview` embed iframe carries a Content-Security-Policy with **`connect-src 'none'`** (alongside `sandbox="allow-scripts"`). That blocks all `fetch`/XHR/WebSocket from inside an embed — so a render-time *live* ticker is **not possible** in an OK embed by design (embeds are sandboxed to be self-contained, like the [animated returns chart](./research/post-ipo-performance.md)). The proxy was healthy (allorigins 200); the data was blocked at the CSP layer, confirmed by reading the injected `<meta http-equiv="Content-Security-Policy">` in the iframe srcdoc.
+- Rebuilt **TSLA Ticker** (`research/tsla-live-ticker.md`, since removed) as a **CSP-safe close-of-day snapshot**: real Yahoo Finance figures (TSLA $391.00, −6.56% vs prior close; prev $418.45, open $420.55, day 388.59–424.68, 52w 273.21–498.83, as of 2026-06-05) baked into the themed card (green=`--chart-2`, red=`--destructive`). Verified it renders correctly in the OK preview. Documented the `connect-src 'none'` boundary and the “refresh on a schedule” pattern in-doc.
+- The truly-live version remains the standalone `examples/tsla-ticker.html` (a plain browser page has no such CSP; polls Yahoo via a keyless CORS proxy every 60s) — noted in the doc as the out-of-KB option.
+- Updated [README](./README.md) blurb to match (snapshot embed, not live widget). Verified zero dead links.
+- Open follow-ups: optionally wire a daily scheduled agent to re-pull the close and rewrite the embed after U.S. market close; optionally parameterize the symbol.
+
+## 2026-06-05: Scrapped the TSLA ticker — live data not feasible in an OK embed
+
+- Removed the TSLA ticker work. Conclusion: a self-updating *live* ticker isn't possible **inside** an OK `html preview` embed — the iframe's CSP sets `connect-src 'none'`, so no `fetch`/XHR/WebSocket. The only ways to make it move are an external scheduled rewrite (CRDT-streamed into the preview) or fake/simulated motion; the user opted not to pursue either for now.
+- Deleted `research/tsla-live-ticker.md`; removed its link from [README](./README.md) (where-to-start) and de-linked the two prior log references above (doc no longer exists). Also removed `examples/refresh-tsla.py` and reverted the `examples-static` static-server entry in `.claude/launch.json`.
+- Kept the durable learning in agent memory (OK embeds run under `connect-src 'none'` — bake data in or refresh on a schedule) so we don't re-discover it. Verified zero dead links.
+
+## 2026-06-08: Restored the TSLA ticker as a live-vs-static failure analysis
+
+- Brought back [TSLA Ticker — why the live version fails](./research/aapl-live-ticker.md), reframed as a forensic analysis of *why* a live ticker can't work in an OK `html preview` embed and *why* a static render was the only option that shows data.
+- The doc holds **two embeds side by side**: (A) a live-fetch attempt that **self-diagnoses** — it reads its own injected CSP and prints the cause, and (B) a static snapshot that renders fine. Verified live in the OK preview: panel A shows `TypeError: Failed to fetch`, `iframe origin: 'null' (opaque sandbox)`, and `CSP connect-src: connect-src 'none'`; panel B shows the green card ($409.75, +4.80%, as of 2026-06-08).
+- Evidence re-measured this turn: Yahoo direct `curl` = **HTTP 200** (0.09s); `allorigins` proxy = **HTTP 522** (~20s, flaky red herring); in-embed `fetch()` = blocked before send. Root cause = OK injects `connect-src 'none'` (plus `img-src data:`, `frame-src 'none'`, etc.) into every embed iframe — a deliberate exfiltration guard.
+- Re-linked from [README](./README.md) where-to-start. Verified zero dead links.
+
+## 2026-06-08: TSLA analysis — went direct to Yahoo (dropped the proxy in panel A)
+
+- Per request “can we go direct to the Yahoo API instead of the proxy.” Switched panel A of [the analysis](./research/aapl-live-ticker.md) to call `query1.finance.yahoo.com` **directly** (no allorigins). Verified live: it still fails with `TypeError: Failed to fetch` + `connect-src 'none'` — proving the proxy was never the in-embed blocker (the CSP blocks every destination).
+- Added a **“going direct vs proxy”** section with a three-case truth table: in-embed (✕ CSP blocks all), standalone browser (✕ Yahoo sends no `Access-Control-Allow-Origin`), server-side (✓ go direct). Evidence this turn: cross-origin request to Yahoo returns **no `access-control-*` headers**; server-side `curl` returns **HTTP 200**.
+- Net: the proxy only ever existed as a browser-CORS shim; the live-refresh path (server-side) should and does go straight to Yahoo. Zero dead links.
+
+## 2026-06-09: Live ticker resolved — keyless + CORS + no proxy (Twelve Data demo, AAPL)
+
+- Found the CORS-side half of the fix to pair with OK's relaxed embed CSP. Tested several quote APIs with a cross-origin `Origin` header: Finnhub / Twelve Data / Alpha Vantage / FMP **all send `Access-Control-Allow-Origin: *`** (Yahoo is the lone exception) — but need a key. **Twelve Data's public `demo` token returns a full quote for AAPL** (price / change / OHLC / prev close / 52-week) **keyless + CORS**; CoinGecko is keyless+CORS for crypto.
+- Added **Panel C** to [the analysis](./research/aapl-live-ticker.md): a live AAPL ticker that fetches `api.twelvedata.com` **directly — no proxy, no managed key**. It prints the live `connect-src`, so it doubles as a verifier of the CSP rebuild (red `Blocked` under `connect-src 'none'`; live data under `connect-src https:`).
+- Constraints documented in-doc: `demo` token = **AAPL only** (TSLA needs a free key = a key in a public repo); truly zero-token CORS feeds exist only for crypto (CoinGecko) / FX, not arbitrary equities.
+- Data path proven by `curl` (Twelve Data demo+AAPL → full JSON + `ACAO: *`). In-embed live render is gated on the app rebuild that ships `connect-src https:` (the running build still served `'none'` at last check; preview churned during the dev restarts). Zero dead links.
+
+## 2026-06-09: Live ticker CONFIRMED working in-embed (CSP rebuild landed)
+
+- Restarted the preview; the fresh OK build now serves `connect-src https: wss: data: blob:` (the CSP fix is live). Panel C of [the analysis](./research/aapl-live-ticker.md) renders **live AAPL data fetched directly from `api.twelvedata.com`** — no proxy, no managed key: $301.54, −1.89%, prev $307.34, open $308.74, day 301.17–317.40, 52w 195.07–317.40, green “Live” + working Refresh. Footer confirms `direct → api.twelvedata.com · no proxy · connect-src https:`.
+- Full arc closed: `connect-src 'none'` (blocked) → static snapshot (workaround) → relaxed CSP + a CORS-sending API (Twelve Data) = genuinely live, proxy-free, key-free embed.
+
+## 2026-06-09: Renamed the ticker doc around the live AAPL example
+
+- Renamed `research/tsla-live-ticker` → [research/aapl-live-ticker](./research/aapl-live-ticker.md) and reframed its title/description/tags around the **working live example (AAPL)** rather than TSLA — since the genuinely-live, keyless, proxy-free embed (Panel C) is AAPL. The move auto-rewrote inbound links in [README](./README.md) and the log.
+- Body analysis panels A (direct-Yahoo live attempt) and B (static snapshot) keep TSLA as the historical “why the naive version failed” case; the title now frames the doc as the AAPL live ticker + that analysis. Verified zero dead links.
