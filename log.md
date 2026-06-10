@@ -208,3 +208,10 @@ What to log:
 - Added the supporting provisional synthesis [HN IPO Trends — June 2026](./research/hn-ipo-trends-june-2026.md), including the trend threshold and engagement method.
 - Sources ingested: [Hacker News IPO Story Search — June 2026 Algolia Extract](./external-sources/hacker-news-ipo-algolia-june-2026.md) and [Bending Spoons Files for U.S. IPO](./external-sources/bending-spoons-ipo-2026.md).
 - Open follow-ups: consider adding Bending Spoons to [Other 2026 Tech IPOs](./research/other-2026-ipos.md); refresh the HN pull after OpenAI publishes a public S-1 or after SpaceX lists.
+
+## 2026-06-10: Added Anthropic Fable use-case article
+
+- Created the canonical article [What People Are Doing with Anthropic's Claude Fable 5](./articles/anthropic-fable-use-cases.md), covering early distinctive uses: Stripe's codebase migration, vision-only Pokemon FireRed gameplay, screenshot-to-code reconstruction, Ethan Mollick's Concord survey-analysis tool, his isochrone map, math-generated games, IMC trading-analysis reasoning, and long-memory game strategy.
+- Added the supporting synthesis [Anthropic Fable Use Cases - Source Scan](./research/anthropic-fable-use-cases.md).
+- Sources ingested: [Anthropic Announces Claude Fable 5 and Claude Mythos 5](./external-sources/anthropic-claude-fable-5-mythos-5.md), [Ethan Mollick on Working with Claude Fable / Mythos](./external-sources/ethan-mollick-fable-mythos-use-cases.md), and [Business Insider Tests Claude Fable 5 Safeguards](./external-sources/business-insider-fable-5-safeguards.md).
+- Caveat captured in the article: public Fable 5 is newly launched and deliberately falls back on some cybersecurity, biology and chemistry, and distillation prompts, so trusted-access Mythos examples are treated as boundary cases rather than ordinary public Fable use.
