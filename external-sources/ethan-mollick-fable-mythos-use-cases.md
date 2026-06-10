@@ -1,6 +1,5 @@
 ---
 title: Ethan Mollick on Working with Claude Fable / Mythos
-sdescription: Early-access writeup describing how Ethan Mollick used Claude Fable to build research tools, maps, games, and other long-horizon artifacts.
 source_url: https://www.oneusefulthing.org/p/what-it-feels-like-to-work-with-mythos
 media_type: text/html
 date_fetched: 2026-06-10
@@ -16,6 +15,7 @@ tags:
   - mythos
   - claude
   - use-cases
+description: Early-access writeup describing how Ethan Mollick used Claude Fable to build research tools, maps, games, and other long-horizon artifacts.
 ---
 ## Extracted source notes
 
