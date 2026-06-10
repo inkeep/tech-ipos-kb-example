@@ -1,9 +1,6 @@
 ---
 title: Which IPO Topics Are Trending on Hacker News — June 2026
-description: "A trailing-31-day snapshot of IPO discussion on Hacker News
-  (retrieved 2026-06-10): SpaceX dominates, the OpenAI/Anthropic AI-lab race
-  follows, and the tone skews skeptical — valuations, S&P index inclusion, and
-  retail access. Ranked by HN points/comments via the Algolia API."
+description: "A trailing-31-day snapshot of IPO discussion on Hacker News (retrieved 2026-06-10): SpaceX dominates, the OpenAI/Anthropic AI-lab race follows, and the tone skews skeptical — valuations, S&P index inclusion, and retail access. Ranked by HN points/comments via the Algolia API."
 status: provisional
 date: 2026-06-10
 tags:
@@ -15,13 +12,14 @@ tags:
   - spacex
   - openai
   - anthropic
+author: Heegun Eom
 ---
 > [!CAUTION]
 > **Not financial advice.** This is a demonstration project. Figures and rankings here are a point-in-time scrape of public Hacker News data and may be provisional, incomplete, or quickly stale. See the [README disclaimer](../README.md) for full context.
 
 # Which IPO Topics Are Trending on Hacker News — June 2026
 
-**Reporting window:** ~10 May – 10 June 2026 (trailing 31 days) · **Retrieved:** 2026-06-10 · **Source:** [Hacker News Search (Algolia) API](#methodology--sources)
+**Author:** Heegun Eom · **Reporting window:** ~10 May – 10 June 2026 (trailing 31 days) · **Retrieved:** 2026-06-10 · **Source:** [Hacker News Search (Algolia) API](#methodology--sources)
 
 > [!NOTE]
 > **The headline: it's a mega-IPO summer, and Hacker News is fixated on SpaceX.** Across the trailing month, `IPO`-tagged story submissions are overwhelmingly about three private giants going public at once — **SpaceX, OpenAI, and Anthropic** — with SpaceX alone accounting for more story volume than every other IPO topic combined. The tone skews **skeptical**: the most-discussed threads question valuations, index-inclusion mechanics, and retail access rather than celebrating the listings.
