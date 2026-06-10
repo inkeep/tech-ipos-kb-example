@@ -177,6 +177,14 @@ What to log:
 - Added a **“going direct vs proxy”** section with a three-case truth table: in-embed (✕ CSP blocks all), standalone browser (✕ Yahoo sends no `Access-Control-Allow-Origin`), server-side (✓ go direct). Evidence this turn: cross-origin request to Yahoo returns **no `access-control-*` headers**; server-side `curl` returns **HTTP 200**.
 - Net: the proxy only ever existed as a browser-CORS shim; the live-refresh path (server-side) should and does go straight to Yahoo. Zero dead links.
 
+## 2026-06-10: Added HN IPO-trends report (new reports/ layer)
+
+- Answered "which IPO topics are trending on Hacker News this month" with a point-in-time snapshot: [Which IPO Topics Are Trending on Hacker News — June 2026](./reports/hacker-news-ipo-trends-2026-06.md). Headline: it's a mega-IPO summer and HN is fixated on **SpaceX** (~60% of named IPO story volume), followed by the **OpenAI/Anthropic** AI-lab race; tone skews **skeptical** (valuations, S&P index inclusion, retail access).
+- Created a new **`reports/`** folder (with frontmatter) for time-boxed trend snapshots — distinct from `research/` (per-subject profiles) and `articles/` (canonical). The report carries a themed stat-card row + a topic-share `html preview` bar chart, a top-10 threads table, a five-theme breakdown, and an inline **Methodology** section.
+- **Data/grounding:** live scrape of the public Hacker News (Algolia) Search API — `query=IPO`, `tags=story`, trailing-31-day window, retrieved 2026-06-10, ranked by points/comments. Every story row links to its HN discussion thread (the primary artifact); market-fact claims in *Why now* cross-link to existing [research](./research/spacex.md) docs that carry external-source citations. No new `external-sources/` captured (the report observes HN itself, not a synthesized claim set).
+- Cross-linked from [README](./README.md) where-to-start. Verified zero dead links; corrected several HN thread permalinks that initially shared a placeholder item id.
+- Open follow-ups: refresh after SPCX lists (~June 12) to capture post-debut reaction; optionally automate a recurring HN scan.
+
 ## 2026-06-09: Live ticker resolved — keyless + CORS + no proxy (Twelve Data demo, AAPL)
 
 - Found the CORS-side half of the fix to pair with OK's relaxed embed CSP. Tested several quote APIs with a cross-origin `Origin` header: Finnhub / Twelve Data / Alpha Vantage / FMP **all send `Access-Control-Allow-Origin: *`** (Yahoo is the lone exception) — but need a key. **Twelve Data's public `demo` token returns a full quote for AAPL** (price / change / OHLC / prev close / 52-week) **keyless + CORS**; CoinGecko is keyless+CORS for crypto.
