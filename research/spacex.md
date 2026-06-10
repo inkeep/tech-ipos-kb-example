@@ -2,11 +2,12 @@
 title: "SpaceX: IPO Outlook & Funding"
 description: "Provisional profile — SpaceX's ~$1.75T IPO (ticker SPCX) priced at a fixed $135/share, Starlink economics, the xAI merger, and how it touches the AI web."
 status: provisional
-date: 2026-06-02
+date: 2026-06-10
 tags: [ research, provisional, spacex, ipo, starlink ]
 sources:
   - external-sources/spacex-ipo-s1-filing.md
   - external-sources/spacex-ipo-135-price.md
+  - external-sources/hacker-news-ipo-algolia-june-2026.md
   - external-sources/anthropic-series-h-65b.md
 ---
 
@@ -21,12 +22,26 @@ What does SpaceX's IPO look like, how is it funded, and where does it touch the 
 
 Of the three companies, SpaceX is **furthest along** — it has filed its S-1 and could list within days. It is *not* a node in the AI "circular financing" web the way OpenAI/Anthropic are, but the **xAI merger** and its **Colossus** data centers give it one real tie-in. Pairs with [OpenAI](/research/openai.md) and [Anthropic](/research/anthropic.md).
 
-> [!NOTE] Snapshot (mid-2026)
-> - **IPO:** filed May 20 2026, ticker **SPCX**; expected to list **~June 11–12, 2026**
-> - **Price:** **$135/share fixed** (no range) × ~555.6M shares → **~$75B** raised at **~$1.75T** — potentially the **largest IPO in history**
+> [!NOTE] Snapshot (as of Jun 10 2026)
+> - **IPO:** filed May 20 2026, ticker **SPCX**; pricing **~Jun 11**, listing **~Jun 12, 2026** (imminent)
+> - **Price:** **$135/share fixed** (no range) × ~555.6M shares → **~$75B** raised at **~$1.75–1.78T** — potentially the **largest IPO in history**
+> - **Demand:** book reported **~4× oversubscribed** ahead of pricing (Reuters, Jun 9)
+> - **Index:** S&P Dow Jones **declined to fast-track** mega-cap IPOs into the S&P 500 (Jun 4) — **no automatic index-fund buying** at listing
 > - **Lead:** Goldman Sachs; ~30% of the float earmarked for **retail**
 > - **2025 financials:** $18.7B revenue (+33%), **$4.9B net loss**
 > - **Starlink:** $11.4B revenue (~61% of total), $4.4B operating profit, ~10M subscribers
+
+## Latest developments (as of Jun 10, 2026)
+
+In the run-up to the imminent listing, four threads dominate the news (all surfaced via the [HN IPO extract](/external-sources/hacker-news-ipo-algolia-june-2026.md), which preserves the headlines, dates, and engagement):
+
+- **Demand is strong:** the book is reported **~4× oversubscribed** ahead of pricing (Reuters, Jun 9) — the bull-case counterweight to the valuation critiques below.
+- **No fast index entry:** **S&P Dow Jones kept its mega-cap IPO rules as-is** after consultation, declining to fast-track SpaceX (and peers) into the S&P 500 (Bloomberg, Jun 4). This was the **single most-discussed IPO story on HN** (1,059 pts) — it means **no automatic, price-insensitive index-fund buying** at debut, removing a demand source some bulls had assumed.
+- **Analysts call it overvalued:** **Morningstar pegs fair value at ~$780B — roughly half the ~$1.78T target** (Reuters, Jun 2; Morningstar, Jun 8–9). **Michael Burry** says neither SpaceX nor Anthropic is worth $1T (Jun 2), and **'Big Short' investor Steve Eisman** is publicly "not a fan" (Jun 8).
+- **Retail framing intensifies:** alongside Fidelity's lowered **$2,000** minimum, critics frame the retail-heavy structure as selling Musk's "moonshots" to small investors; **China and Hong Kong investors were barred** from the offering on security grounds (Jun 5).
+
+> [!WARNING] Bull vs. bear, in one line
+> Heavy oversubscription (demand) is colliding with a near-universal analyst view that the price is ~2× fair value (supply of skepticism) — and without S&P inclusion, the post-listing bid leans on conviction buyers rather than forced index flows.
 
 ## Valuation trajectory
 
