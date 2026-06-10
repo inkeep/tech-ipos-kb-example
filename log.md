@@ -182,6 +182,7 @@ What to log:
 - Refreshed [SpaceX](./research/spacex.md) ahead of the imminent ~Jun 12 listing. Added a new **"Latest developments (as of Jun 10, 2026)"** section and threaded the news into the snapshot, risks, and open questions: book **~4× oversubscribed** (Reuters, Jun 9); **S&P Dow Jones declined to fast-track** mega-cap IPOs into the S&P 500 (Bloomberg, Jun 4 — the #1 HN IPO story, 1,059 pts), so **no automatic index-fund buying** at debut; **Morningstar ~$780B fair value** (~half the ~$1.78T target), plus Burry and Eisman skepticism; **China/HK barred** from the offering.
 - **Grounding:** the live outlet pages (Reuters/Bloomberg/Morningstar) are paywalled/blocked to WebFetch, so claims are cited to the already-ingested [HN Algolia extract](./external-sources/hacker-news-ipo-algolia-june-2026.md) (real captured data — headlines, dates, outlets, engagement) rather than fabricating new source bodies. Added that extract to the doc's `sources:` and bumped `date` to 2026-06-10.
 - Verified zero dead links.
+- Added a themed **valuation-gap chart** (`html preview`): IPO target ~$1.78T vs Morningstar fair value ~$780B (~2.3× / ~$1.0T gap), wired to theme tokens, in a new "The valuation gap" subsection.
 - Open follow-ups: after SPCX prices/lists, capture the actual offer outcome + day-1 trade and ingest a primary pricing source; revisit Morningstar's ~$780B vs the market once it trades.
 
 ## 2026-06-10: Added HN IPO-trends report (new reports/ layer)

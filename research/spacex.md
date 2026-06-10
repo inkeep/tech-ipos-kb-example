@@ -43,6 +43,33 @@ In the run-up to the imminent listing, four threads dominate the news (all surfa
 > [!WARNING] Bull vs. bear, in one line
 > Heavy oversubscription (demand) is colliding with a near-universal analyst view that the price is ~2× fair value (supply of skepticism) — and without S&P inclusion, the post-listing bid leans on conviction buyers rather than forced index flows.
 
+### The valuation gap
+
+The headline of the bear case in one picture: the IPO is priced at **roughly 2.3×** the fair value an independent analyst (Morningstar) puts on the company — an **~$1.0T gap**.
+
+```html preview
+<div style="font-family:system-ui,sans-serif;padding:20px;color:var(--foreground)">
+  <h3 style="margin:0 0 4px;font-size:15px;font-weight:600">SpaceX: IPO price vs. analyst fair value</h3>
+  <div style="font-size:12px;color:var(--muted-foreground);margin-bottom:14px">Implied equity valuation, USD trillions</div>
+  <div id="bars" style="display:flex;align-items:flex-end;gap:28px;height:200px;max-width:420px"></div>
+  <script>
+    var data = [['IPO target', 1.78, 'var(--chart-1)'], ['Morningstar fair value', 0.78, 'var(--chart-5)']];
+    var max = 1.78;
+    document.getElementById('bars').innerHTML = data.map(function (d) {
+      return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;' +
+        'gap:8px;height:100%;justify-content:flex-end">' +
+        '<span style="font-size:15px;font-weight:700">$' + d[1].toFixed(2) + 'T</span>' +
+        '<div style="width:100%;height:' + (d[1] / max * 100) + '%;' +
+        'background:' + d[2] + ';border-radius:var(--radius) var(--radius) 0 0"></div>' +
+        '<span style="font-size:12px;color:var(--muted-foreground);text-align:center">' + d[0] + '</span>' +
+        '</div>';
+    }).join('');
+  </script>
+</div>
+```
+
+*IPO target ~$1.78T per the fixed $135 × ~555.6M-share structure ([$135 pricing](/external-sources/spacex-ipo-135-price.md)); fair value ~$780B per Morningstar (Reuters, Jun 2; Morningstar, Jun 8–9), surfaced via the [HN IPO extract](/external-sources/hacker-news-ipo-algolia-june-2026.md). Michael Burry similarly argues SpaceX isn't worth $1T.*
+
 ## Valuation trajectory
 
 | Date | Event | Valuation |
