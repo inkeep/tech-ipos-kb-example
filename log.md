@@ -23,8 +23,8 @@ What to log:
 ## YYYY-MM-DD: <short title>
 
 - <what was done>
-- Files touched: [path/to/doc-a](./path/to/doc-a.md), [path/to/doc-b](./path/to/doc-b.md)
-- Sources ingested: [source-slug](./external-sources/source-slug.md)
+- Files touched: `path/to/doc-a`, `path/to/doc-b`
+- Sources ingested: `source-slug`
 - Open follow-ups: <topic-1>, <topic-2>
 
 -->
@@ -201,3 +201,10 @@ What to log:
 
 - Renamed `research/tsla-live-ticker` → [research/aapl-live-ticker](./research/aapl-live-ticker.md) and reframed its title/description/tags around the **working live example (AAPL)** rather than TSLA — since the genuinely-live, keyless, proxy-free embed (Panel C) is AAPL. The move auto-rewrote inbound links in [README](./README.md) and the log.
 - Body analysis panels A (direct-Yahoo live attempt) and B (static snapshot) keep TSLA as the historical “why the naive version failed” case; the title now frames the doc as the AAPL live ticker + that analysis. Verified zero dead links.
+
+## 2026-06-10: Added HN IPO trends report for June 2026
+
+- Created the canonical report [HN IPO Topics Trending This Month — June 2026](./articles/hn-ipo-trends-june-2026.md), ranking HN-active IPO topics from highest valuation to lowest: SpaceX, Anthropic, OpenAI, and Bending Spoons.
+- Added the supporting provisional synthesis [HN IPO Trends — June 2026](./research/hn-ipo-trends-june-2026.md), including the trend threshold and engagement method.
+- Sources ingested: [Hacker News IPO Story Search — June 2026 Algolia Extract](./external-sources/hacker-news-ipo-algolia-june-2026.md) and [Bending Spoons Files for U.S. IPO](./external-sources/bending-spoons-ipo-2026.md).
+- Open follow-ups: consider adding Bending Spoons to [Other 2026 Tech IPOs](./research/other-2026-ipos.md); refresh the HN pull after OpenAI publishes a public S-1 or after SpaceX lists.
