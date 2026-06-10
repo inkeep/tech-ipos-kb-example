@@ -177,6 +177,13 @@ What to log:
 - Added a **“going direct vs proxy”** section with a three-case truth table: in-embed (✕ CSP blocks all), standalone browser (✕ Yahoo sends no `Access-Control-Allow-Origin`), server-side (✓ go direct). Evidence this turn: cross-origin request to Yahoo returns **no `access-control-*` headers**; server-side `curl` returns **HTTP 200**.
 - Net: the proxy only ever existed as a browser-CORS shim; the live-refresh path (server-side) should and does go straight to Yahoo. Zero dead links.
 
+## 2026-06-10: Updated SpaceX profile with latest IPO news (pre-listing)
+
+- Refreshed [SpaceX](./research/spacex.md) ahead of the imminent ~Jun 12 listing. Added a new **"Latest developments (as of Jun 10, 2026)"** section and threaded the news into the snapshot, risks, and open questions: book **~4× oversubscribed** (Reuters, Jun 9); **S&P Dow Jones declined to fast-track** mega-cap IPOs into the S&P 500 (Bloomberg, Jun 4 — the #1 HN IPO story, 1,059 pts), so **no automatic index-fund buying** at debut; **Morningstar ~$780B fair value** (~half the ~$1.78T target), plus Burry and Eisman skepticism; **China/HK barred** from the offering.
+- **Grounding:** the live outlet pages (Reuters/Bloomberg/Morningstar) are paywalled/blocked to WebFetch, so claims are cited to the already-ingested [HN Algolia extract](./external-sources/hacker-news-ipo-algolia-june-2026.md) (real captured data — headlines, dates, outlets, engagement) rather than fabricating new source bodies. Added that extract to the doc's `sources:` and bumped `date` to 2026-06-10.
+- Verified zero dead links.
+- Open follow-ups: after SPCX prices/lists, capture the actual offer outcome + day-1 trade and ingest a primary pricing source; revisit Morningstar's ~$780B vs the market once it trades.
+
 ## 2026-06-10: Added HN IPO-trends report (new reports/ layer)
 
 - Answered "which IPO topics are trending on Hacker News this month" with a point-in-time snapshot: [Which IPO Topics Are Trending on Hacker News — June 2026](./reports/hacker-news-ipo-trends-2026-06.md). Headline: it's a mega-IPO summer and HN is fixated on **SpaceX** (~60% of named IPO story volume), followed by the **OpenAI/Anthropic** AI-lab race; tone skews **skeptical** (valuations, S&P index inclusion, retail access).
