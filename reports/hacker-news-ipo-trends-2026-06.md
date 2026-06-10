@@ -160,8 +160,8 @@ The recurring skepticism on HN — overvaluation, forced index buying, retail be
 - **Window:** ~2026-05-10 → 2026-06-10. **Retrieved:** 2026-06-10.
 - **Ranking metric:** HN `points` (net upvotes) and `num_comments`, as returned by Algolia at retrieval time. "Trending" here = submission volume + engagement on `IPO`-tagged stories; it is *not* a measure of front-page time.
 - **Each row in the tables links to the original HN discussion thread** — the primary artifact this report observes.
-- **Caveats:** title-keyword topic counts are approximate; comment/point totals are a snapshot and drift as threads age; the relevance endpoint caps returned hits, so totals (~790 stories) are lower-bound estimates. Market-valuation and filing facts cited in *Why now* are grounded in the linked [research](../research/) docs, which carry their own external-source citations.
+- **Caveats:** title-keyword topic counts are approximate; comment/point totals are a snapshot and drift as threads age; the relevance endpoint caps returned hits, so totals (~790 stories) are lower-bound estimates. Market-valuation and filing facts cited in *Why now* are grounded in the linked research docs (e.g. [SpaceX](../research/spacex.md), [OpenAI](../research/openai.md), [Anthropic](../research/anthropic.md)), which carry their own external-source citations.
 
 ---
 
-*A point-in-time HN trend snapshot. For the durable IPO analysis it draws on, see the [research profiles](../research/) and the [README](../README.md).*
+*A point-in-time HN trend snapshot. For the durable IPO analysis it draws on, see the [SpaceX](../research/spacex.md), [OpenAI](../research/openai.md), and [Anthropic](../research/anthropic.md) profiles and the [README](../README.md).*

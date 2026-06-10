@@ -34,6 +34,7 @@ Running underneath all three is the **AI "circular financing" web** — the same
 - **[AAPL Live Ticker — a keyless, proxy-free OK embed](./research/aapl-live-ticker.md)** — a genuinely live AAPL ticker fetched directly (no proxy, no managed key), plus the analysis of why a naive in-embed fetch first failed (the sandbox CSP + Yahoo's missing CORS) and how a relaxed CSP and a CORS-sending API fixed it.
 - **Company deep-dives** — [SpaceX](./research/spacex.md), [Anthropic](./research/anthropic.md), and [OpenAI](./research/openai.md): valuation trajectory, funding, and capital-web position.
 - **[Other 2026 Tech IPOs](./research/other-2026-ipos.md)** — beyond the big three: Cerebras (already public), plus the pipeline (Databricks, Stripe, Canva, Cohere, Strava, Lime).
+- **[Which IPO Topics Are Trending on Hacker News — June 2026](./reports/hacker-news-ipo-trends-2026-06.md)** — a trailing-31-day snapshot of HN's IPO discussion: SpaceX dominates, the tone is skeptical, ranked by upvotes/comments via the Algolia API.
 
 ## How this knowledge base is organized
 
