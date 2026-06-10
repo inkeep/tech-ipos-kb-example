@@ -98,15 +98,15 @@ The **most-upvoted IPO thread of the month** wasn't about a company at all — i
 
 - [SpaceX, Other Mega IPOs Denied Fast Index Entry by S&P](https://news.ycombinator.com/item?id=48405718) — **1,059 pts, 515 comments** (#1 of the window)
 - [Ask HN: What is your opinion on index rule changes to accommodate Mega-Cap IPOs?](https://news.ycombinator.com/item?id=48368083) — 18 pts
-- [Mega-cap IPOs: Implications for institutional investors and index managers](https://news.ycombinator.com/item?id=48405718)
+- [Mega-cap IPOs: Implications for institutional investors and index managers](https://news.ycombinator.com/item?id=48422073)
 
 ### 3. Retail access & the "selling dreams" critique
 
 An unusual amount of discussion about *who gets to buy in* — brokerages lowering minimums, and skepticism that retail is being sold the top.
 
 - [Fidelity lowers SpaceX IPO entry requirement from $500,000 to just $2,000](https://news.ycombinator.com/item?id=48404734) — 23 pts
-- [SpaceX IPO video sells Musk's space, AI, asteroid dreams to mom-n-pop investors](https://news.ycombinator.com/item?id=48391046)
-- [China, HK Investors Banned from SpaceX IPO over Security](https://news.ycombinator.com/item?id=48455233)
+- [SpaceX IPO video sells Musk's space, AI, asteroid dreams to mom-n-pop investors](https://news.ycombinator.com/item?id=48408668)
+- [China, HK Investors Banned from SpaceX IPO over Security](https://news.ycombinator.com/item?id=48412690)
 
 ### 4. The AI-lab IPO race & bubble fears
 
@@ -116,16 +116,16 @@ The through-line connecting the labs: a coordinated rush to public markets, shad
 - [Sam Altman's Business Dealings Under GOP Scrutiny Ahead of OpenAI's IPO](https://news.ycombinator.com/item?id=48134429) — 199 pts
 - [Anthropic Is Preparing for IPO and We Should Be Worried](https://news.ycombinator.com/item?id=48193111) — 89 pts, 96 comments
 - [Cheap AI Could Derail OpenAI and Anthropic's IPOs](https://news.ycombinator.com/item?id=48242934) — 13 pts
-- [Fear of AI bubble ahead of SpaceX IPO](https://news.ycombinator.com/item?id=48455233)
+- [Fear of AI bubble ahead of SpaceX IPO](https://news.ycombinator.com/item?id=48459459)
 
 ### 5. Process explainers & "beyond the big three"
 
 A quieter, more neutral strand: how IPOs actually work, plus the smaller names filing in the slipstream of the giants.
 
-- [The mechanics of the IPO process (explained by a former Reddit CEO)](https://news.ycombinator.com/item?id=48455233)
+- [The mechanics of the IPO process (explained by a former Reddit CEO)](https://news.ycombinator.com/item?id=48457397)
 - [Italy's Bending Spoons, owner of AOL and Vimeo, files for Nasdaq IPO](https://news.ycombinator.com/item?id=48446310) — 122 pts, 111 comments
-- [Notion Names First Board of Directors in Key Step Toward IPO](https://news.ycombinator.com/item?id=48455233)
-- [Perplexity plans IPO in 2028 regardless of what happens to Anthropic or OpenAI](https://news.ycombinator.com/item?id=48455233)
+- [Notion Names First Board of Directors in Key Step Toward IPO](https://news.ycombinator.com/item?id=48455176)
+- [Perplexity plans IPO in 2028 regardless of what happens to Anthropic or OpenAI](https://news.ycombinator.com/item?id=48458991)
 
 ## Top 10 IPO threads of the month (by points)
 
@@ -160,8 +160,8 @@ The recurring skepticism on HN — overvaluation, forced index buying, retail be
 - **Window:** ~2026-05-10 → 2026-06-10. **Retrieved:** 2026-06-10.
 - **Ranking metric:** HN `points` (net upvotes) and `num_comments`, as returned by Algolia at retrieval time. "Trending" here = submission volume + engagement on `IPO`-tagged stories; it is *not* a measure of front-page time.
 - **Each row in the tables links to the original HN discussion thread** — the primary artifact this report observes.
-- **Caveats:** title-keyword topic counts are approximate; comment/point totals are a snapshot and drift as threads age; the relevance endpoint caps returned hits, so totals (~790 stories) are lower-bound estimates. Market-valuation and filing facts cited in *Why now* are grounded in the linked [research](../research/) docs, which carry their own external-source citations.
+- **Caveats:** title-keyword topic counts are approximate; comment/point totals are a snapshot and drift as threads age; the relevance endpoint caps returned hits, so totals (~790 stories) are lower-bound estimates. Market-valuation and filing facts cited in *Why now* are grounded in the linked research docs (e.g. [SpaceX](../research/spacex.md), [OpenAI](../research/openai.md), [Anthropic](../research/anthropic.md)), which carry their own external-source citations.
 
 ---
 
-*A point-in-time HN trend snapshot. For the durable IPO analysis it draws on, see the [research profiles](../research/) and the [README](../README.md).*
+*A point-in-time HN trend snapshot. For the durable IPO analysis it draws on, see the [SpaceX](../research/spacex.md), [OpenAI](../research/openai.md), and [Anthropic](../research/anthropic.md) profiles and the [README](../README.md).*
