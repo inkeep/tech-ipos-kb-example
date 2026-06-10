@@ -1,6 +1,6 @@
 ---
 title: "SpaceX: IPO Outlook & Funding"
-description: "Provisional profile — SpaceX's ~$1.75T IPO (ticker SPCX) priced at a fixed $135/share, Starlink economics, the xAI merger, and how it touches the AI web."
+description: "Provisional profile — SpaceX's ~$1.75–1.78T IPO (ticker SPCX): fixed $135/share, ~4× oversubscribed ahead of the ~Jun 12 listing, S&P's index fast-track denial, analyst overvaluation pushback (~$780B), Starlink economics, and the xAI/AI tie-in."
 status: provisional
 date: 2026-06-10
 tags: [ research, provisional, spacex, ipo, starlink ]
@@ -83,13 +83,15 @@ In **February 2026**, SpaceX merged with **xAI**, pitching a combined "space and
 ## IPO mechanics & risks
 
 - **Mechanics:** Goldman-led, ~30% retail float (3× the mega-cap norm) — a deliberately retail-friendly, spectacle IPO around Musk's brand. Priced at a **fixed $135/share** (no range), an all-primary raise that **bypasses the conventional range-then-narrow bookbuild** ([$135 pricing](/external-sources/spacex-ipo-135-price.md)).
-- **Risks:** company-wide losses, softening Starlink ARPU, an unproven orbital-AI thesis, and a valuation with **no clean comparable** (analysts note Musk's persona may matter more than fundamentals to some buyers).
+- **Risks:** company-wide losses, softening Starlink ARPU, an unproven orbital-AI thesis, and a valuation with **no clean comparable** (analysts note Musk's persona may matter more than fundamentals to some buyers). As of early June, the bear case has hardened into specific analyst price targets (**Morningstar ~$780B**) and the **loss of expected S&P 500 index demand** — see [Latest developments](#latest-developments-as-of-jun-10-2026).
 
 ## Open questions
 
 - Reconciling the ~$1.25T (Feb merger) vs. ~$1.75T (IPO) valuations — what changed, and is the xAI contribution double-counted?
 - How large/recurring is the Anthropic↔Colossus compute relationship?
 - Does Starlink eventually get carved out, or stay inside SPCX?
+- Does the ~4× oversubscription hold at pricing, and can a conviction-driven bid sustain ~$1.78T **without** the S&P 500 index flows that S&P just declined to provide?
+- How does SPCX trade against Morningstar's ~$780B fair value once the lockup-free retail float starts moving?
 
 ## Further reading
 
