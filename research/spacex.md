@@ -2,11 +2,12 @@
 title: "SpaceX: IPO Outlook & Funding"
 description: "Provisional profile — SpaceX's ~$1.75T IPO (ticker SPCX) priced at a fixed $135/share, Starlink economics, the xAI merger, and how it touches the AI web."
 status: provisional
-date: 2026-06-02
+date: 2026-06-10
 tags: [ research, provisional, spacex, ipo, starlink ]
 sources:
   - external-sources/spacex-ipo-s1-filing.md
   - external-sources/spacex-ipo-135-price.md
+  - external-sources/hacker-news-ipo-algolia-june-2026.md
   - external-sources/anthropic-series-h-65b.md
 ---
 
