@@ -18,7 +18,7 @@ The KB profiles three mega-IPOs — [SpaceX](/research/spacex.md), [OpenAI](/res
 
 ## Context
 
-The "big three" are the headliners, not the whole class. As of June 2026 only one large tech name has actually **priced and listed** (Cerebras); the big three have all *filed* but not yet traded. Beneath them sits a broad pipeline — and most of it is AI or AI-adjacent, which is why the [AI capital web](/research/ai-funding-web.md) is the connective tissue of the entire cohort, not just the anchors.
+The "big three" are the headliners, not the whole class. As of June 2026 only one large tech name has actually **priced and listed** (Cerebras); the big three have all *filed* but not yet traded. Beneath them sits a broad pipeline — and most of it is AI or AI-adjacent, which is why the AI capital web is the connective tissue of the entire cohort, not just the anchors.
 
 > [!NOTE] Snapshot (June 5, 2026)
 > - **Already public:** Cerebras (CBRS) — the biggest *completed* tech IPO of 2026 so far
@@ -57,16 +57,15 @@ Figures and timing per [Built In's 2026 watchlist](/external-sources/builtin-202
 
 ## Why this matters for the capital web
 
-The same hyperscalers and chip firms that anchor the [AI capital web](/research/ai-funding-web.md) — Nvidia, Microsoft, Amazon, Google, Oracle, AMD, Broadcom — are investors, suppliers, *and* customers across this whole class, not just the big three. Cerebras (OpenAI as customer) and Databricks/Cohere (enterprise AI) extend the same web. **CoreWeave** is a related node already in the KB, though it listed in **2025**, not 2026.
+The same hyperscalers and chip firms that anchor the AI capital web — Nvidia, Microsoft, Amazon, Google, Oracle, AMD, Broadcom — are investors, suppliers, *and* customers across this whole class, not just the big three. Cerebras (OpenAI as customer) and Databricks/Cohere (enterprise AI) extend the same web. **CoreWeave** is a related node already in the KB, though it listed in **2025**, not 2026.
 
 ## Open questions
 
 - Which pipeline names actually price in 2026 vs. slip to 2027? (Databricks and Stripe have repeatedly been "ready.")
 - Reconcile Cerebras's end-of-day valuation reports (~$66B close vs. ~$95B cited elsewhere) and confirm whether the greenshoe was exercised.
-- Should Cerebras be added as a node/edge in the [AI capital web](/research/ai-funding-web.md) (OpenAI-as-customer edge)?
 
 ## Further reading
 
 - The big three: [SpaceX](/research/spacex.md) · [OpenAI](/research/openai.md) · [Anthropic](/research/anthropic.md)
-- [The AI capital web](/research/ai-funding-web.md) · [Historical tech IPOs by year](/research/historical-tech-ipos.md)
+- [Historical tech IPOs by year](/research/historical-tech-ipos.md)
 - Sources: [Cerebras IPO](/external-sources/cerebras-ipo-2026.md) · [Built In 2026 watchlist](/external-sources/builtin-2026-ipo-watchlist.md)

@@ -78,6 +78,6 @@ In **February 2026**, SpaceX merged with **xAI**, pitching a combined "space and
 
 ## Further reading
 
-- [The AI capital web](/research/ai-funding-web.md) · [OpenAI](/research/openai.md) · [Anthropic](/research/anthropic.md)
+- [OpenAI](/research/openai.md) · [Anthropic](/research/anthropic.md)
 - [Historical tech IPOs by year](/research/historical-tech-ipos.md) — where SpaceX's record ~$75B raise fits against past IPOs
 - Sources: [SpaceX S-1](/external-sources/spacex-ipo-s1-filing.md) · [$135 IPO pricing](/external-sources/spacex-ipo-135-price.md) · [Anthropic Series H (Colossus tie)](/external-sources/anthropic-series-h-65b.md)

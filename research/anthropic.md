@@ -19,7 +19,7 @@ Where does Anthropic stand on the path to an IPO, and who funds it?
 
 ## Context
 
-In May 2026 Anthropic **overtook OpenAI** to become the most valuable AI startup. Its capital structure leans on two hyperscalers (Amazon, Google) rather than one, and it deliberately multi-sources silicon. Pairs with [OpenAI](/research/openai.md) and feeds the [AI capital web](/research/ai-funding-web.md).
+In May 2026 Anthropic **overtook OpenAI** to become the most valuable AI startup. Its capital structure leans on two hyperscalers (Amazon, Google) rather than one, and it deliberately multi-sources silicon. Pairs with [OpenAI](/research/openai.md).
 
 > [!NOTE] Snapshot (mid-2026)
 > - **Valuation:** \~$965B (Series H, May 28 2026) — now **#1** among AI startups
@@ -68,6 +68,6 @@ Anthropic runs a **three-platform** compute strategy — Google TPUs, Amazon Tra
 
 ## Further reading
 
-- [The AI capital web](/research/ai-funding-web.md) · [OpenAI](/research/openai.md) · [SpaceX](/research/spacex.md)
+- [OpenAI](/research/openai.md) · [SpaceX](/research/spacex.md)
 - Sources: [Series H](/external-sources/anthropic-series-h-65b.md) · [Amazon](/external-sources/anthropic-amazon-compute.md) · [Google TPU](/external-sources/anthropic-google-tpu-deal.md)
 

@@ -193,3 +193,10 @@ What to log:
 
 - Renamed `research/tsla-live-ticker` → [research/aapl-live-ticker](./research/aapl-live-ticker.md) and reframed its title/description/tags around the **working live example (AAPL)** rather than TSLA — since the genuinely-live, keyless, proxy-free embed (Panel C) is AAPL. The move auto-rewrote inbound links in [README](./README.md) and the log.
 - Body analysis panels A (direct-Yahoo live attempt) and B (static snapshot) keep TSLA as the historical “why the naive version failed” case; the title now frames the doc as the AAPL live ticker + that analysis. Verified zero dead links.
+
+## 2026-06-10: Removed the AI capital-web article + research doc and cleaned up references
+
+- User deleted the canonical article `articles/ai-capital-web.md` and the provisional research doc `research/ai-funding-web.md` (hard to keep in sync). Scrubbed everything that pointed at them.
+- Removed/unlinked broken references in [README](./README.md), [OpenAI](./research/openai.md), [Anthropic](./research/anthropic.md), [SpaceX](./research/spacex.md), [Historical tech IPOs](./research/historical-tech-ipos.md), and [Other 2026 IPOs](./research/other-2026-ipos.md): dropped the “Where to start” and related-list links to the funding chart, unlinked inline “AI capital web” / “bubble” mentions down to plain text, and removed the now-moot open question about adding Cerebras to the web.
+- Deleted the one orphaned source the chart relied on: `external-sources/bloomberg-ai-circular-financing-chart.md` + its `.png` (no surviving doc cited it). Kept [market-caps-may-2026](./external-sources/market-caps-may-2026.md) — still cited by [post-ipo-performance](./research/post-ipo-performance.md).
+- Content layer is now dead-link clean. Earlier log entries above are left verbatim per the append-only audit trail and still reference the deleted docs as historical fact.

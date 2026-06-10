@@ -91,5 +91,4 @@ Saudi Aramco **$25.6B** (2019) · Alibaba **$21.8B** (2014) · SoftBank **$21.3B
 
 - The 2026 cohort: [SpaceX](/research/spacex.md) · [OpenAI](/research/openai.md) · [Anthropic](/research/anthropic.md)
 - [Post-IPO Returns: IPO Day → 5 Years](/research/post-ipo-performance.md) — the animated companion: your **% return** buying at the IPO over the five years after listing (Uber, Snowflake, Rivian)
-- [The AI capital web](/research/ai-funding-web.md) — the funding chart for the AI side of this cohort
 

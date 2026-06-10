@@ -23,7 +23,7 @@ Where does OpenAI stand on the path to an IPO, and how is it wired into the AI c
 
 ## Context
 
-OpenAI sits at the center of the AI "circular financing" web. As of mid-2026 it is both the most-funded private company in history *and* the largest buyer of AI compute — and it has begun the move to public markets. This doc anchors the [AI capital web](/research/ai-funding-web.md) and pairs with [Anthropic](/research/anthropic.md) and [SpaceX](/research/spacex.md).
+OpenAI sits at the center of the AI "circular financing" web. As of mid-2026 it is both the most-funded private company in history *and* the largest buyer of AI compute — and it has begun the move to public markets. This doc pairs with [Anthropic](/research/anthropic.md) and [SpaceX](/research/spacex.md).
 
 > [!NOTE] Snapshot (mid-2026)
 > - **Valuation:** ~$852B (post-money, Mar 31 2026 round) — since *overtaken* by Anthropic's $965B
@@ -65,7 +65,7 @@ OpenAI has committed an estimated **\~$1.15 trillion** on compute/cloud/chips (2
 | Amazon (AWS) | \~$38B | Cloud compute (**+ up to $50B invested into OpenAI**) | [↗](/external-sources/openai-122b-funding-round.md) |
 | CoreWeave | \~$22B | GPU cloud (Nvidia \~6% owner + backstops capacity) | [↗](/external-sources/openai-coreweave-contracts.md) |
 
-The striking pattern: **Nvidia and Amazon are simultaneously suppliers *and* equity investors**, and the AMD deal hands OpenAI a \~10% stake in its *supplier*. Money flows in a loop — this is the crux of the "[bubble](/research/ai-funding-web.md)" debate.
+The striking pattern: **Nvidia and Amazon are simultaneously suppliers *and* equity investors**, and the AMD deal hands OpenAI a \~10% stake in its *supplier*. Money flows in a loop — this is the crux of the "bubble" debate.
 
 ## IPO outlook
 
@@ -81,7 +81,6 @@ The striking pattern: **Nvidia and Amazon are simultaneously suppliers *and* equ
 
 ## Further reading
 
-- [The AI capital web](/research/ai-funding-web.md) — the full funding chart this doc feeds
 - [Anthropic](/research/anthropic.md) · [SpaceX](/research/spacex.md)
 - Sources: [$122B round](/external-sources/openai-122b-funding-round.md) · [Nvidia](/external-sources/openai-nvidia-10gw-partnership.md) · [AMD](/external-sources/openai-amd-6gw-partnership.md) · [Oracle/Stargate](/external-sources/openai-oracle-300b-stargate.md) · [Broadcom](/external-sources/openai-broadcom-10gw-accelerators.md) · [Microsoft](/external-sources/microsoft-openai-pbc-restructuring.md) · [CoreWeave](/external-sources/openai-coreweave-contracts.md) · [$1.15T infra](/external-sources/openai-infrastructure-1-15-trillion.md)
 

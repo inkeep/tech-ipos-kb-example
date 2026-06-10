@@ -3,7 +3,7 @@ name: open-knowledge
 description: "MUST invoke before reading or editing any `.md` / `.mdx` file, and before any `mcp__open-knowledge__*` tool call (`exec`, `search`, `write`, `edit`, and the rest). This skill is installed into the repository by `ok init`, so its presence alone means this is an Open Knowledge project — its runtime contract governs every markdown file here, with no need to probe for a `.ok/` directory. Authoritative agent-runtime contract; supersedes the overlapping MCP server `instructions` echo."
 compatibility: "Claude Code, Claude Desktop, Claude Cowork, Claude.ai web. Requires Open Knowledge MCP server + code execution."
 metadata:
-  version: "0.10.0-beta.10"
+  version: "0.12.0-beta.0"
   author: "Inkeep"
   repository: "https://github.com/inkeep/open-knowledge"
 ---
